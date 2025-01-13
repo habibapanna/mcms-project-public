@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const links = (
@@ -81,9 +81,9 @@ const Navbar = () => {
 
         {/* Navbar End */}
         <div className="navbar-end">
-          <a className="btn btn-gradient bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0 shadow-md hover:from-orange-500 hover:to-yellow-400">
+          <Link to="/login" className="btn btn-gradient bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0 shadow-md hover:from-orange-500 hover:to-yellow-400">
             Join Us
-          </a>
+          </Link>
         </div>
       </div>
     </div>
