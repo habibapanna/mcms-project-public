@@ -10,6 +10,9 @@ import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import Register from "../Pages/Register/Register";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import Profile from "../Pages/Profile/Profile";
+import CampDetails from "../components/CampDetails/CampDetails";
+import PrivateRoute from "./PrivateRoute";
+
  
  export const router = createBrowserRouter([
     {
@@ -25,6 +28,11 @@ import Profile from "../Pages/Profile/Profile";
             path: 'available-camps',
             element: <AvailableCamps></AvailableCamps>
         },
+        {
+            path: 'camp-details/:id',
+            element: <PrivateRoute><CampDetails></CampDetails></PrivateRoute>
+        },
+        
         {
             path: 'login',
             element: <Login></Login>

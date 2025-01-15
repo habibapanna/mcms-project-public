@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSpring, animated } from "react-spring";
 
 const AvailableCamps = () => {
   const [camps, setCamps] = useState([]);
@@ -40,6 +41,14 @@ const AvailableCamps = () => {
       camp.date.includes(searchTerm)
   );
 
+  // Animation for card entry
+  const cardAnimation = useSpring({
+    opacity: 1,
+    transform: "scale(1)",
+    from: { opacity: 0, transform: "scale(0.8)" },
+    config: { tension: 170, friction: 26 },
+  });
+
   return (
     <div style={{ padding: "20px" }}>
       <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
@@ -63,15 +72,16 @@ const AvailableCamps = () => {
 
       <div className="grid grid-cols-3 gap-5">
         {filteredCamps.map((camp) => (
-          <div
-            className="border shadow-xl rounded-2xl p-5"
+          <animated.div
             key={camp.name}
             style={{
+              ...cardAnimation,
               height: "500px", // Set the card height to be consistent
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between", // Distribute space evenly
             }}
+            className="border shadow-xl rounded-2xl p-5"
           >
             <img
               src={camp.image}
@@ -105,7 +115,7 @@ const AvailableCamps = () => {
             >
               Details
             </Link>
-          </div>
+          </animated.div>
         ))}
       </div>
     </div>
