@@ -8,10 +8,11 @@ import AvailableCamps from "../Pages/AvailableCamps/AvailableCamps";
 import Login from "../Pages/Login/Login";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import Register from "../Pages/Register/Register";
-import Dashboard from "../Pages/Dashboard/Dashboard";
-import Profile from "../Pages/Profile/Profile";
 import CampDetails from "../components/CampDetails/CampDetails";
 import PrivateRoute from "./PrivateRoute";
+import OrganizerDashboard from "../Pages/Dashboard/OrganizerDashboard/OrganizerDashboard";
+import OrganizerProfile from "../Pages/Dashboard/OrganizerDashboard/OrganizerProfile";
+import AddCamp from "../Pages/Dashboard/OrganizerDashboard/AddCamp";
 
  
  export const router = createBrowserRouter([
@@ -40,17 +41,22 @@ import PrivateRoute from "./PrivateRoute";
         {
             path: 'register',
             element: <Register></Register>
-        },
-        {
-            path: 'dashboard',
-            element: <Dashboard></Dashboard>
-        },
-        {
-            path: 'profile',
-            element: <Profile></Profile>
-        },
-        
-        
-      ]
+        },   
+      ],
     },
+
+    {  
+            path: 'organizer-dashboard',
+            element: <PrivateRoute><OrganizerDashboard></OrganizerDashboard></PrivateRoute>,
+            children: [
+                {
+                    path: 'organizer-profile',
+                    element: <OrganizerProfile></OrganizerProfile>
+                },
+                { path: 'add-camp', 
+                element: <AddCamp /> },
+            ]
+        
+    }
+
   ]);

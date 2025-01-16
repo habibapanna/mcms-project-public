@@ -25,7 +25,7 @@ const PopularCamps = () => {
           >
             <img
               src={camp.image}
-              alt={camp.name}
+              alt={camp.campName}
               style={{
                 width: "100%",
                 height: "150px",
@@ -34,14 +34,14 @@ const PopularCamps = () => {
               }}
             />
             <div>
-              <h3 className="text-xl font-bold mt-2 mb-2">{camp.name}</h3>
-              <p><strong>Date & Time:</strong> {camp.date}</p>
+              <h3 className="text-xl font-bold mt-2 mb-2">{camp.campName}</h3>
+              <p><strong>Date & Time:</strong> {camp.dateTime}</p>
               <p><strong>Location:</strong> {camp.location}</p>
               <p><strong>Healthcare Professional:</strong> {camp.healthcareProfessional}</p>
               <p><strong>Participants:</strong> {camp.participantCount}</p>
             </div>
             <Link
-              className="btn w-full mt-5 bg-blue-500 text-white hover:bg-blue-600"
+              className="btn w-full mt-5 bg-teal-500 text-white hover:bg-teal-600"
               to={`/camp-details/${camp._id}`}
             >
               See Details
@@ -49,7 +49,7 @@ const PopularCamps = () => {
           </div>
         ))}
       </div>
-      <Link to="/available-camps" className="btn mt-5 bg-green-500 text-white hover:bg-green-600">
+      <Link to="/available-camps" className="btn mt-5 bg-blue-500 text-white hover:bg-blue-600">
         See All Camps
       </Link>
     </div>

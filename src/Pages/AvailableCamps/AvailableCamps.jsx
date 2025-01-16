@@ -26,9 +26,9 @@ const AvailableCamps = () => {
     if (criteria === "Most Registered") {
       sortedCamps.sort((a, b) => b.participantCount - a.participantCount);
     } else if (criteria === "Camp Fees") {
-      sortedCamps.sort((a, b) => a.fees - b.fees);
+      sortedCamps.sort((a, b) => a.campFees - b.campFees);
     } else if (criteria === "Alphabetical Order") {
-      sortedCamps.sort((a, b) => a.name.localeCompare(b.name));
+      sortedCamps.sort((a, b) => a.campName.localeCompare(b.campName));
     }
 
     setCamps(sortedCamps);
@@ -36,9 +36,9 @@ const AvailableCamps = () => {
 
   const filteredCamps = camps.filter(
     (camp) =>
-      camp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      camp.campName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       camp.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      camp.date.includes(searchTerm)
+      camp.dateTime.includes(searchTerm)
   );
 
   // Animation for card entry
@@ -73,7 +73,7 @@ const AvailableCamps = () => {
       <div className="grid grid-cols-3 gap-5">
         {filteredCamps.map((camp) => (
           <animated.div
-            key={camp.name}
+            key={camp.campName}
             style={{
               ...cardAnimation,
               height: "500px", // Set the card height to be consistent
@@ -85,7 +85,7 @@ const AvailableCamps = () => {
           >
             <img
               src={camp.image}
-              alt={camp.name}
+              alt={camp.campName}
               style={{
                 width: "100%",
                 height: "150px",
@@ -94,9 +94,9 @@ const AvailableCamps = () => {
               }}
             />
             <div>
-              <h3 className="text-xl font-bold mt-2 mb-2">{camp.name}</h3>
+              <h3 className="text-xl font-bold mt-2 mb-2">{camp.campName}</h3>
               <p>
-                <strong>Date & Time:</strong> {camp.date}
+                <strong>Date & Time:</strong> {camp.dateTime}
               </p>
               <p>
                 <strong>Location:</strong> {camp.location}
@@ -110,8 +110,8 @@ const AvailableCamps = () => {
               <p style={{ fontSize: "14px", color: "#555" }}>{camp.description}</p>
             </div>
             <Link
-              className="btn w-full mt-5 bg-blue-500 text-white hover:bg-blue-600"
-              to={`/camps/${camp.name}`}
+              className="btn w-full mt-5 bg-teal-500 text-white hover:bg-teal-600"
+              to={`/camps/${camp.campName}`}
             >
               Details
             </Link>

@@ -109,7 +109,7 @@ const Navbar = () => {
                   <span className="font-semibold text-center">{user.displayName}</span>
                 </li>
                 <li>
-                  <Link to="/dashboard">Dashboard</Link>
+                  <Link to="/organizer-dashboard">Dashboard</Link>
                 </li>
                 <li>
                   <button onClick={handleLogout}>Logout</button>

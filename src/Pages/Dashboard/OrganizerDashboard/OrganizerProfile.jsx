@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Profile = () => {
+const OrganizerProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
     name: 'John Doe',
@@ -109,4 +109,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default OrganizerProfile;

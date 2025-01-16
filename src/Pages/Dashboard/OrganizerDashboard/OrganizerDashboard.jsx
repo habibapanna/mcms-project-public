@@ -1,13 +1,13 @@
 import { Link, Outlet } from "react-router-dom";
 
 
-const Dashboard = () => {
+const OrganizerDashboard = () => {
   return (
     <div className="dashboard-layout bg-gray-100 min-h-screen">
       <nav className="bg-blue-600 text-white p-4 shadow-md">
         <ul className="flex justify-around">
           <li className="hover:bg-blue-700 rounded px-4 py-2 transition-colors">
-            <Link to="profile">Organizer Profile</Link>
+            <Link to="organizer-profile">Organizer Profile</Link>
           </li>
           <li className="hover:bg-blue-700 rounded px-4 py-2 transition-colors">
             <Link to="add-camp">Add A Camp</Link>
@@ -28,4 +28,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default OrganizerDashboard;
