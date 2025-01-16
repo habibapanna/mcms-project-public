@@ -7,7 +7,7 @@ const FeedbackForm = ({ campId, participantId }) => {
   const [feedbackText, setFeedbackText] = useState("");
 
   const handleSubmit = () => {
-    // Check if fields are empty or invalid
+    // Validate fields
     if (!rating || rating < 1 || rating > 5) {
       toast.error("Please provide a valid rating between 1 and 5.");
       return;
@@ -17,7 +17,7 @@ const FeedbackForm = ({ campId, participantId }) => {
       return;
     }
 
-    // Proceed to submit if validation passes
+    // Submit feedback
     fetch("http://localhost:5000/submit-feedback", {
       method: "POST",
       headers: {
@@ -34,11 +34,15 @@ const FeedbackForm = ({ campId, participantId }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 max-w-lg mx-auto border border-gray-200">
+    <div className="bg-white shadow-md rounded-lg p-6 mx-4 sm:mx-auto sm:max-w-md md:max-w-lg border border-gray-200">
       <ToastContainer />
-      <h3 className="text-2xl font-bold text-teal-600 mb-4">Provide Feedback</h3>
+      <h3 className="text-xl md:text-2xl font-bold text-teal-600 mb-4 text-center">
+        Provide Feedback
+      </h3>
       <div className="mb-4">
-        <label className="block text-gray-700 font-medium mb-2">Rating (1 to 5):</label>
+        <label className="block text-gray-700 font-medium mb-2">
+          Rating (1 to 5):
+        </label>
         <input
           type="number"
           min="1"
@@ -66,7 +70,6 @@ const FeedbackForm = ({ campId, participantId }) => {
         Submit Feedback
       </button>
     </div>
-    
   );
 };
 

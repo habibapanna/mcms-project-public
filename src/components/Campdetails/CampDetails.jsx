@@ -68,9 +68,9 @@ const CampDetails = ({ loggedInUser }) => {
 
         {/* Right Side: Camp Details */}
         <div className="md:w-1/2 flex flex-col justify-between space-y-5 p-4">
-          <h2 className="text-3xl font-semibold text-gray-800">{camp.name}</h2>
-          <p><strong className="text-gray-600">Camp Fees:</strong> ${camp.fees}</p>
-          <p><strong className="text-gray-600">Date & Time:</strong> {camp.date}</p>
+          <h2 className="text-3xl font-semibold text-gray-800">{camp.campName}</h2>
+          <p><strong className="text-gray-600">Camp Fees:</strong> ${camp.campFees}</p>
+          <p><strong className="text-gray-600">Date & Time:</strong> {camp.dateTime}</p>
           <p><strong className="text-gray-600">Location:</strong> {camp.location}</p>
           <p><strong className="text-gray-600">Healthcare Professional:</strong> {camp.healthcareProfessional}</p>
           <p><strong className="text-gray-600">Participants:</strong> {camp.participantCount}</p>

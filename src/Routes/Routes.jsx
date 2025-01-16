@@ -13,6 +13,8 @@ import PrivateRoute from "./PrivateRoute";
 import OrganizerDashboard from "../Pages/Dashboard/OrganizerDashboard/OrganizerDashboard";
 import OrganizerProfile from "../Pages/Dashboard/OrganizerDashboard/OrganizerProfile";
 import AddCamp from "../Pages/Dashboard/OrganizerDashboard/AddCamp";
+import ManageCamps from "../Pages/Dashboard/OrganizerDashboard/ManageCamps";
+import ManageRegisteredCamps from "../Pages/Dashboard/OrganizerDashboard/ManageRegisteredCamps";
 
  
  export const router = createBrowserRouter([
@@ -55,6 +57,8 @@ import AddCamp from "../Pages/Dashboard/OrganizerDashboard/AddCamp";
                 },
                 { path: 'add-camp', 
                 element: <AddCamp /> },
+                { path: 'manage-camps', element: <ManageCamps /> },
+                { path: 'manage-registered-camps', element: <ManageRegisteredCamps /> },
             ]
         
     }

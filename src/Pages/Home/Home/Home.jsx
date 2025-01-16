@@ -12,8 +12,8 @@ const Home = () => {
             <BannerSection></BannerSection>
             <PopularCamps></PopularCamps>
             <FeedbackForm></FeedbackForm>
-            <FeedbackDisplay></FeedbackDisplay>
-            <UpcomingCamps></UpcomingCamps>
+            {/* <FeedbackDisplay></FeedbackDisplay>
+            <UpcomingCamps></UpcomingCamps> */}
             
             
         </div>

@@ -8,16 +8,13 @@ const AvailableCamps = () => {
   const [sortCriteria, setSortCriteria] = useState("");
 
   useEffect(() => {
-    // Fetch camps from your API or database
     fetch("http://localhost:5000/available-camps")
       .then((response) => response.json())
       .then((data) => setCamps(data))
       .catch((error) => console.error("Error fetching camps:", error));
   }, []);
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
+  const handleSearch = (e) => setSearchTerm(e.target.value);
 
   const handleSort = (criteria) => {
     setSortCriteria(criteria);
@@ -41,7 +38,6 @@ const AvailableCamps = () => {
       camp.dateTime.includes(searchTerm)
   );
 
-  // Animation for card entry
   const cardAnimation = useSpring({
     opacity: 1,
     transform: "scale(1)",
@@ -50,18 +46,18 @@ const AvailableCamps = () => {
   });
 
   return (
-    <div style={{ padding: "20px" }}>
-      <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+    <div className="p-5 md:p-10">
+      <div className="flex flex-col md:flex-row gap-4 mb-8">
         <input
           type="text"
           placeholder="Search camps..."
           value={searchTerm}
           onChange={handleSearch}
-          style={{ padding: "10px", borderRadius: "5px", border: "1px solid #ccc", flex: 1 }}
+          className="p-3 border border-gray-300 rounded-lg flex-1"
         />
         <select
           onChange={(e) => handleSort(e.target.value)}
-          style={{ padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}
+          className="p-3 border border-gray-300 rounded-lg"
         >
           <option value="">Sort by</option>
           <option value="Most Registered">Most Registered</option>
@@ -70,51 +66,42 @@ const AvailableCamps = () => {
         </select>
       </div>
 
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCamps.map((camp) => (
           <animated.div
             key={camp.campName}
-            style={{
-              ...cardAnimation,
-              height: "500px", // Set the card height to be consistent
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between", // Distribute space evenly
-            }}
-            className="border shadow-xl rounded-2xl p-5"
+            style={cardAnimation}
+            className="border shadow-xl rounded-lg overflow-hidden flex flex-col"
           >
             <img
               src={camp.image}
               alt={camp.campName}
-              style={{
-                width: "100%",
-                height: "150px",
-                objectFit: "cover",
-                borderRadius: "10px 10px 0 0",
-              }}
+              className="w-full h-48 object-cover"
             />
-            <div>
-              <h3 className="text-xl font-bold mt-2 mb-2">{camp.campName}</h3>
-              <p>
-                <strong>Date & Time:</strong> {camp.dateTime}
-              </p>
-              <p>
-                <strong>Location:</strong> {camp.location}
-              </p>
-              <p>
-                <strong>Healthcare Professional:</strong> {camp.healthcareProfessional}
-              </p>
-              <p>
-                <strong>Participants:</strong> {camp.participantCount}
-              </p>
-              <p style={{ fontSize: "14px", color: "#555" }}>{camp.description}</p>
+            <div className="p-5 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 className="text-lg font-bold mb-2">{camp.campName}</h3>
+                <p className="text-sm">
+                  <strong>Date & Time:</strong> {camp.dateTime}
+                </p>
+                <p className="text-sm">
+                  <strong>Location:</strong> {camp.location}
+                </p>
+                <p className="text-sm">
+                  <strong>Healthcare Professional:</strong> {camp.healthcareProfessional}
+                </p>
+                <p className="text-sm">
+                  <strong>Participants:</strong> {camp.participantCount}
+                </p>
+                <p className="text-sm text-gray-600 mt-2">{camp.description}</p>
+              </div>
+              <Link
+                className="mt-5 bg-teal-500 text-white text-center py-2 rounded-lg hover:bg-teal-600"
+                to={`/camps/${camp.campName}`}
+              >
+                Details
+              </Link>
             </div>
-            <Link
-              className="btn w-full mt-5 bg-teal-500 text-white hover:bg-teal-600"
-              to={`/camps/${camp.campName}`}
-            >
-              Details
-            </Link>
           </animated.div>
         ))}
       </div>

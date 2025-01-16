@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider";
 
-
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
 
@@ -44,15 +43,15 @@ const Navbar = () => {
   );
 
   return (
-    <div className="sticky top-0 z-50">
-      <div className="navbar bg-gradient-to-r from-blue-200 via-white to-green-200 shadow-transparent">
+    <div className="sticky top-0 z-50 bg-white shadow-md">
+      <div className="navbar bg-gradient-to-r from-blue-200 via-white to-green-200 shadow-md px-4 md:px-8">
         {/* Navbar Start */}
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-6 w-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -72,9 +71,12 @@ const Navbar = () => {
               {links}
             </ul>
           </div>
-          <a className="flex items-center space-x-3 text-2xl font-bold text-gray-800 hover:text-yellow-400 transition">
+          <Link
+            to="/"
+            className="flex items-center space-x-3 text-xl font-bold text-gray-800 hover:text-yellow-400 transition"
+          >
             <img
-              className="w-12 h-12 rounded-full border-2 border-white shadow-lg"
+              className="w-10 h-10 rounded-full border-2 border-white shadow-lg"
               src="https://i.postimg.cc/qMctjC1W/download-24.jpg"
               alt="Logo"
             />
@@ -84,7 +86,7 @@ const Navbar = () => {
               <span className="text-green-600">M</span>
               <span className="text-pink-500">S</span>
             </span>
-          </a>
+          </Link>
         </div>
 
         {/* Navbar Center */}
@@ -98,7 +100,10 @@ const Navbar = () => {
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
-                  <img src={user.photoURL || "https://via.placeholder.com/40"} alt="Profile" />
+                  <img
+                    src={user.photoURL || "https://via.placeholder.com/40"}
+                    alt="Profile"
+                  />
                 </div>
               </label>
               <ul
@@ -106,7 +111,9 @@ const Navbar = () => {
                 className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
               >
                 <li>
-                  <span className="font-semibold text-center">{user.displayName}</span>
+                  <span className="font-semibold text-center">
+                    {user.displayName}
+                  </span>
                 </li>
                 <li>
                   <Link to="/organizer-dashboard">Dashboard</Link>
