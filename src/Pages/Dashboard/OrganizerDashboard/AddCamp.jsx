@@ -36,9 +36,6 @@ const AddCamp = () => {
   return (
     <div className="bg-white shadow-md rounded-lg p-6 max-w-2xl mx-auto border border-gray-200 mt-10">
       <ToastContainer />
-      <h2 className="text-3xl font-bold text-teal-blue mb-6 text-center">
-        Add A Camp
-      </h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Camp Name */}
         <div className="mb-4">
