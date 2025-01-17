@@ -97,7 +97,7 @@ const AvailableCamps = () => {
               </div>
               <Link
                 className="mt-5 bg-teal-500 text-white text-center py-2 rounded-lg hover:bg-teal-600"
-                to={`/camps/${camp.campName}`}
+                to={`/camp-details/${camp._id}`}
               >
                 Details
               </Link>

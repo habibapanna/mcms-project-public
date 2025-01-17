@@ -15,22 +15,53 @@ const Register = () => {
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        console.log(data);
-        createUser(data.email, data.password)
+        const { name, email, photo, password } = data;
+    
+        createUser(email, password, name, photo)
             .then((result) => {
-                const loggedUser = result.user;
-                console.log(loggedUser);
-                toast.success("Registration successful!", { position: "top-right" });
-        navigate("/");
+                console.log("User registered:", result.user);
+    
+                const newUser = { name, email, photo };
+                fetch("http://localhost:5000/users", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(newUser),
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log("User created:", data);
+                        toast.success("Registration successful!", { position: "top-right" });
+                        navigate("/");
+                    })
+                    .catch((err) => {
+                        console.error("Failed to save user to database:", err);
+                        toast.error("Failed to save user information!", { position: "top-right" });
+                    });
             })
-            .catch((error) => toast.error(`Registration failed: ${error.message}`, { position: "top-right" }));
+            .catch((error) => {
+                console.error("Registration failed:", error);
+                toast.error(`Registration failed: ${error.message}`, { position: "top-right" });
+            });
     };
+    
+    
 
     const handleGoogleLogin = () => {
         googleLogIn()
-            .then((result) => {
-                const user = result.user;
-                console.log("Google login successful:", user);
+        .then((result) => {
+            const user = result.user;
+            fetch("http://localhost:5000/users", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(user),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                })
+                .catch((err) => console.error("Error storing user:", err));
                 toast.success("Google login successful!", { position: "top-right" });
         navigate("/");
             })

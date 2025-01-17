@@ -16,23 +16,69 @@ const Login = () => {
 
   const onSubmit = (data) => {
     login(data.email, data.password)
-      .then((result) => {
-        const user = result.user;
-        toast.success("Login successful!", { position: "top-right" });
-        navigate("/");
-      })
-      .catch((error) => toast.error(`Login failed: ${error.message}`, { position: "top-right" }));
-  };
+        .then((result) => {
+            const user = result.user;
 
-  const handleGoogleLogin = () => {
-    googleLogIn()
+            // Extract relevant user fields for the database
+            const newUser = {
+                name: user.displayName || "Anonymous User", // Fallback if displayName is null
+                email: user.email,
+                photo: user.photoURL || "https://via.placeholder.com/150", // Fallback placeholder
+            };
+
+            // Store user in the database
+            fetch("http://localhost:5000/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newUser),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log("User stored in database:", data);
+                })
+                .catch((err) => {
+                    console.error("Error storing user in database:", err);
+                    toast.error("Failed to save user information in the database!", {
+                        position: "top-right",
+                    });
+                });
+
+            // Login successful toast and navigation
+            toast.success("Login successful!", { position: "top-right" });
+            navigate("/");
+        })
+        .catch((error) => {
+            console.error("Login failed:", error);
+            toast.error(`Login failed: ${error.message}`, { position: "top-right" });
+        });
+};
+
+
+
+const handleGoogleLogin = () => {
+  googleLogIn()
       .then((result) => {
-        const user = result.user;
-        toast.success("Google login successful!", { position: "top-right" });
-        navigate("/");
+          const user = result.user;
+          fetch("http://localhost:5000/users", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(user),
+          })
+              .then((res) => res.json())
+              .then((data) => {
+                  console.log(data);
+              })
+              .catch((err) => console.error("Error storing user:", err));
+          toast.success("Google login successful!", { position: "top-right" });
+          navigate("/");
       })
-      .catch((error) => toast.error(`Google login failed: ${error.message}`, { position: "top-right" }));
-  };
+      .catch((error) =>
+          toast.error(`Google login failed: ${error.message}`, { position: "top-right" })
+      );
+};
+
 
   return (
     <div className="hero min-h-screen bg-gradient-to-r from-green-100 to-blue-100">
