@@ -75,7 +75,7 @@ const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a
               <li className="flex items-center">
               <FaRegListAlt className="mr-3" />
                 <NavLink
-                  to="participant-profile"
+                  to="analytics"
                   className={({ isActive }) =>
                     isActive
                       ? "bg-white rounded px-4 py-2 transition-colors text-black"
@@ -124,6 +124,61 @@ const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a
                   Payment History
                 </NavLink>
               </li>
+
+{/* <li className="flex items-center">
+                <FaUser className="mr-3" />
+                <NavLink
+                  to="organizer-profile"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
+                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                  }
+                >
+                  Organizer Profile
+                </NavLink>
+              </li>
+              <li className="flex items-center">
+                <FaPlus className="mr-3" />
+                <NavLink
+                  to="add-camp"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
+                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                  }
+                >
+                  Add A Camp
+                </NavLink>
+              </li>
+              <li className="flex items-center">
+                <FaClipboardList className="mr-3" />
+                <NavLink
+                  to="manage-camps"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
+                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                  }
+                >
+                  Manage Camps
+                </NavLink>
+              </li>
+              <li className="flex items-center">
+                <FaRegListAlt className="mr-3" />
+                <NavLink
+                  to="manage-registered-camps"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
+                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                  }
+                >
+                  Manage Registered Camps
+                </NavLink>
+              </li> */}
+
+              
             </>
           )}
         </ul>

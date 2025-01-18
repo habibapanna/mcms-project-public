@@ -7,7 +7,7 @@ const CampDetails = ({ loggedInUser }) => {
   const [camp, setCamp] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
   const [participant, setParticipant] = useState({
-    name: loggedInUser?.name || "",  // Assuming `loggedInUser` contains name
+    name: loggedInUser?.displayName || "",  // Assuming `loggedInUser` contains name
     email: loggedInUser?.email || "",  // Assuming `loggedInUser` contains email
     age: "",
     phone: "",
@@ -61,7 +61,7 @@ const CampDetails = ({ loggedInUser }) => {
         <div className="flex justify-center md:w-1/2 bg-gray-100 rounded-lg shadow-lg overflow-hidden">
           <img
             src={camp.image}
-            alt={camp.name}
+            alt={camp.campName}
             className="w-full h-full object-cover"
           />
         </div>
@@ -89,13 +89,13 @@ const CampDetails = ({ loggedInUser }) => {
       {modalOpen && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <h3 className="text-2xl font-semibold mb-4">Register for {camp.name}</h3>
+            <h3 className="text-2xl font-semibold mb-4">Register for {camp.campName}</h3>
             <form>
               <div className="mb-4">
                 <label className="block font-semibold">Camp Name</label>
                 <input
                   type="text"
-                  value={camp.name}
+                  value={camp.campName}
                   readOnly
                   className="w-full p-2 border rounded-md bg-gray-100"
                 />
@@ -104,7 +104,7 @@ const CampDetails = ({ loggedInUser }) => {
                 <label className="block font-semibold">Camp Fees</label>
                 <input
                   type="text"
-                  value={`$${camp.fees}`}
+                  value={`$${camp.campFees}`}
                   readOnly
                   className="w-full p-2 border rounded-md bg-gray-100"
                 />
@@ -131,7 +131,7 @@ const CampDetails = ({ loggedInUser }) => {
                 <label className="block font-semibold">Participant Name</label>
                 <input
                   type="text"
-                  value={participant.name}
+                  value={participant.displayName}
                   readOnly
                   className="w-full p-2 border rounded-md bg-gray-100"
                 />
