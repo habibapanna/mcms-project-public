@@ -10,11 +10,12 @@ import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import Register from "../Pages/Register/Register";
 import CampDetails from "../components/CampDetails/CampDetails";
 import PrivateRoute from "./PrivateRoute";
-import OrganizerDashboard from "../Pages/Dashboard/OrganizerDashboard/OrganizerDashboard";
-import OrganizerProfile from "../Pages/Dashboard/OrganizerDashboard/OrganizerProfile";
-import AddCamp from "../Pages/Dashboard/OrganizerDashboard/AddCamp";
-import ManageCamps from "../Pages/Dashboard/OrganizerDashboard/ManageCamps";
-import ManageRegisteredCamps from "../Pages/Dashboard/OrganizerDashboard/ManageRegisteredCamps";
+import OrganizerProfile from "../Pages/Dashboard/Dashboard/OrganizerProfile";
+import AddCamp from "../Pages/Dashboard/Dashboard/AddCamp";
+import ManageCamps from "../Pages/Dashboard/Dashboard/ManageCamps";
+import ManageRegisteredCamps from "../Pages/Dashboard/Dashboard/ManageRegisteredCamps";
+import Footer from "../Pages/Shared/Footer/Footer";
+import Dashboard from "../Pages/Dashboard/Dashboard/Dashboard";
 
  
  export const router = createBrowserRouter([
@@ -44,12 +45,16 @@ import ManageRegisteredCamps from "../Pages/Dashboard/OrganizerDashboard/ManageR
             path: 'register',
             element: <Register></Register>
         },   
+        {
+            path: 'footer',
+            element: <Footer></Footer>
+        },   
       ],
     },
 
     {  
-            path: 'organizer-dashboard',
-            element: <PrivateRoute><OrganizerDashboard></OrganizerDashboard></PrivateRoute>,
+            path: 'dashboard',
+            element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
             children: [
                 {
                     path: 'organizer-profile',

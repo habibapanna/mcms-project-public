@@ -116,7 +116,7 @@ const Navbar = () => {
                   </span>
                 </li>
                 <li>
-                  <Link to="/organizer-dashboard">Dashboard</Link>
+                  <Link to="/dashboard">Dashboard</Link>
                 </li>
                 <li>
                   <button onClick={handleLogout}>Logout</button>

@@ -58,7 +58,7 @@ const PopularCamps = () => {
       <div className="mt-8 text-center">
         <Link
           to="/available-camps"
-          className="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition"
+          className="inline-block bg-teal-500 text-white px-6 py-3 rounded-lg hover:bg-teal-600 transition"
         >
           See All Camps
         </Link>

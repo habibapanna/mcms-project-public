@@ -44,29 +44,47 @@ const Register = () => {
                 console.error("Registration failed:", error);
                 toast.error(`Registration failed: ${error.message}`, { position: "top-right" });
             });
-    };
-    
-    
+    };  
 
     const handleGoogleLogin = () => {
         googleLogIn()
-        .then((result) => {
-            const user = result.user;
-            fetch("http://localhost:5000/users", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(user),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data);
+            .then((result) => {
+                console.log(result.user); // Fixed typo
+    
+                const userInfo = {
+                    email: result.user?.email,
+                    name: result.user?.displayName,
+                };
+    
+                fetch("http://localhost:5000/users", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(userInfo),
                 })
-                .catch((err) => console.error("Error storing user:", err));
-                toast.success("Google login successful!", { position: "top-right" });
-        navigate("/");
+                    .then((res) => res.json())
+                    .then((data) => {
+                        if (data.insertedId) {
+                            console.log("User added to database:", data);
+                            toast.success("Google login successful!", { position: "top-right" });
+                            navigate("/"); // Navigate after successful data save
+                        } else if (data.message === "user already exists") {
+                            toast.info("User already exists!", { position: "top-right" });
+                            navigate("/"); // Navigate if the user exists
+                        } else {
+                            toast.error("Unexpected response from server.", { position: "top-right" });
+                        }
+                    })
+                    .catch((err) => {
+                        console.error("Error storing user:", err);
+                        toast.error("Failed to store user in database.", { position: "top-right" });
+                    });
             })
-            .catch((error) => toast.error(`Google login failed: ${error.message}`, { position: "top-right" }));
+            .catch((error) => {
+                console.error("Google login error:", error);
+                toast.error(`Google login failed: ${error.message}`, { position: "top-right" });
+            });
     };
+    
 
     return (
         <div className="min-h-screen bg-gradient-to-r from-green-100 to-blue-100 flex items-center justify-center">

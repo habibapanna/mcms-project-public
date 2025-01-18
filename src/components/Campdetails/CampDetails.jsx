@@ -77,7 +77,7 @@ const CampDetails = ({ loggedInUser }) => {
           <p className="text-gray-700"><strong>Description:</strong> {camp.description}</p>
 
           <button
-            className="btn bg-blue-500 text-white hover:bg-blue-600 py-2 px-6 rounded-lg shadow-md mt-4 transition ease-in-out duration-300"
+            className="btn bg-teal-500 text-white hover:bg-teal-600 py-2 px-6 rounded-lg shadow-md mt-4 transition ease-in-out duration-300"
             onClick={() => setModalOpen(true)}
           >
             Join Camp
@@ -197,14 +197,16 @@ const CampDetails = ({ loggedInUser }) => {
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"
-                  className="bg-blue-500 text-white py-2 px-6 rounded-lg mt-4"
+                  className="bg-teal-500 text-white py-2 px-6
+                  hover:bg-teal-600 rounded-lg mt-4"
                   onClick={handleSubmit}
                 >
                   Register
                 </button>
                 <button
                   type="button"
-                  className="bg-gray-500 text-white py-2 px-6 rounded-lg mt-4"
+                  className="bg-gray-500
+                  hover:bg-gray-600 text-white py-2 px-6 rounded-lg mt-4"
                   onClick={() => setModalOpen(false)}
                 >
                   Close
