@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { AuthContext } from '../../providers/AuthProvider';
 
-const CampDetails = ({ loggedInUser }) => {
+const CampDetails = () => {
   const { id } = useParams();
+  const {user} = useContext(AuthContext)
   const [camp, setCamp] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
   const [participant, setParticipant] = useState({
-    name: loggedInUser?.name || "",  // Ensure these values are set
-    email: loggedInUser?.email || "",
+    name: user?.displayName || "",  // Ensure these values are set
+    email: user?.email || "",
     CampName: "",
     campFees: "",
     location: "",
@@ -20,10 +22,20 @@ const CampDetails = ({ loggedInUser }) => {
 
   useEffect(() => {
     fetch(`http://localhost:5000/camps/${id}`)
-      .then((response) => response.json())
-      .then((data) => setCamp(data))
-      .catch((error) => console.error("Error fetching camp details:", error));
-  }, [id]);
+        .then((response) => response.json())
+        .then((data) => {
+            setCamp(data);
+            // Update participant state with camp details
+            setParticipant((prevParticipant) => ({
+                ...prevParticipant,
+                CampName: data.campName || "",
+                campFees: data.campFees || "",
+                location: data.location || "",
+            }));
+        })
+        .catch((error) => console.error("Error fetching camp details:", error));
+}, [id]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -135,7 +147,7 @@ const CampDetails = ({ loggedInUser }) => {
                 <label className="block font-semibold">Participant Name</label>
                 <input
                   type="text"
-                  value={loggedInUser?.name || ""}
+                  value={user?.displayName || ""}
                   readOnly
                   className="w-full p-2 border rounded-md bg-gray-100"
                 />
@@ -144,7 +156,7 @@ const CampDetails = ({ loggedInUser }) => {
                 <label className="block font-semibold">Participant Email</label>
                 <input
                   type="email"
-                  value={loggedInUser?.email || ""}
+                  value={user?.email || ""}
                   readOnly
                   className="w-full p-2 border rounded-md bg-gray-100"
                 />

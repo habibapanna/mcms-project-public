@@ -30,7 +30,7 @@ const RegisteredCamps = ({ participantId }) => {
         toast.success(`Payment successful! Transaction ID: ${transactionId}`);
         setRegisteredCamps((prev) =>
           prev.map((camp) =>
-            camp.id === campId
+            camp._id === campId
               ? { ...camp, paymentStatus: "Paid", transactionId, canCancel: false }
               : camp
           )
@@ -50,7 +50,7 @@ const RegisteredCamps = ({ participantId }) => {
 
       if (response.ok) {
         toast.success("Registration canceled successfully!");
-        setRegisteredCamps((prev) => prev.filter((camp) => camp.id !== campId));
+        setRegisteredCamps((prev) => prev.filter((camp) => camp._id !== campId));
       } else {
         toast.error("Failed to cancel registration.");
       }
@@ -83,16 +83,16 @@ const RegisteredCamps = ({ participantId }) => {
           <tbody>
             {registeredCamps.length > 0 ? (
               registeredCamps.map((camp) => (
-                <tr key={camp.id} className="hover:bg-gray-100">
+                <tr key={camp._id} className="hover:bg-gray-100">
+                  <td className="px-4 py-2 border">{camp.CampName}</td>
+                  <td className="px-4 py-2 border">${camp.campFees}</td>
                   <td className="px-4 py-2 border">{camp.name}</td>
-                  <td className="px-4 py-2 border">${camp.fees}</td>
-                  <td className="px-4 py-2 border">{camp.participantName}</td>
                   <td className="px-4 py-2 border">
                     {camp.paymentStatus === "Paid" ? (
                       <span className="text-green-600 font-bold">Paid</span>
                     ) : (
                       <button
-                        onClick={() => handlePayment(camp.id, camp.fees)}
+                        onClick={() => handlePayment(camp._id, camp.campFees)}
                         className="px-3 py-1 bg-blue-600 text-white rounded shadow hover:bg-blue-700"
                       >
                         Pay
@@ -109,7 +109,7 @@ const RegisteredCamps = ({ participantId }) => {
                   <td className="px-4 py-2 border">
                     <div className="flex space-x-2">
                       <button
-                        onClick={() => handleCancel(camp.id)}
+                        onClick={() => handleCancel(camp._id)}
                         className={`px-3 py-1 rounded shadow ${
                           camp.canCancel
                             ? "bg-red-600 text-white hover:bg-red-700"
@@ -121,7 +121,7 @@ const RegisteredCamps = ({ participantId }) => {
                       </button>
                       {camp.paymentStatus === "Paid" && camp.confirmationStatus === "Confirmed" && (
                         <button
-                          onClick={() => handleFeedback(camp.id)}
+                          onClick={() => handleFeedback(camp._id)}
                           className="px-3 py-1 bg-green-600 text-white rounded shadow hover:bg-green-700"
                         >
                           Feedback

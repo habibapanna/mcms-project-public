@@ -1,19 +1,42 @@
-import { Link, Outlet, NavLink } from "react-router-dom";
-import { FaUser, FaPlus, FaClipboardList, FaRegListAlt, FaBars, FaHome, FaCampground, FaEnvelope } from "react-icons/fa"; // Import icons
+import { Outlet, NavLink } from "react-router-dom";
+import {
+  FaUser,
+  FaPlus,
+  FaClipboardList,
+  FaRegListAlt,
+  FaBars,
+  FaHome,
+  FaCampground,
+  FaEnvelope,
+} from "react-icons/fa";
+import { useState } from "react";
 
-const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a prop
+const Dashboard = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const isOrganizer = false;
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div className="dashboard-layout min-h-screen flex flex-col sm:flex-row max-w-6xl mx-auto">
-      {/* Sidebar Navigation Bar */}
-      <nav className="bg-blue-600 text-white w-full sm:w-64 p-4 shadow-md sm:static sm:h-auto fixed top-0 left-0 sm:translate-x-0 transform transition-transform ease-in-out duration-300">
-        {/* Hamburger Icon for mobile */}
+    <div className="flex flex-col min-h-screen max-w-6xl mx-auto">
+      {/* Sidebar Navigation */}
+      <div
+        className={`fixed inset-y-0 left-0 bg-blue-600 text-white p-4 w-64 z-50 transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } sm:translate-x-0 transition-transform duration-300 ease-in-out`}
+      >
+        {/* Close button for mobile */}
         <div className="sm:hidden flex justify-end mb-4">
-          <button className="text-2xl">
-            <FaBars />
+          <button
+            className="text-2xl text-white focus:outline-none"
+            onClick={toggleSidebar}
+          >
+            ✕
           </button>
         </div>
 
-        {/* Organizer or Participant Navigation */}
         <ul className="space-y-6">
           {isOrganizer ? (
             <>
@@ -23,8 +46,8 @@ const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a
                   to="organizer-profile"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                      ? "bg-white rounded px-4 py-2 text-black"
+                      : "hover:bg-blue-700 rounded px-4 py-2"
                   }
                 >
                   Organizer Profile
@@ -36,8 +59,8 @@ const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a
                   to="add-camp"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                      ? "bg-white rounded px-4 py-2 text-black"
+                      : "hover:bg-blue-700 rounded px-4 py-2"
                   }
                 >
                   Add A Camp
@@ -49,8 +72,8 @@ const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a
                   to="manage-camps"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                      ? "bg-white rounded px-4 py-2 text-black"
+                      : "hover:bg-blue-700 rounded px-4 py-2"
                   }
                 >
                   Manage Camps
@@ -62,8 +85,8 @@ const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a
                   to="manage-registered-camps"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                      ? "bg-white rounded px-4 py-2 text-black"
+                      : "hover:bg-blue-700 rounded px-4 py-2"
                   }
                 >
                   Manage Registered Camps
@@ -73,13 +96,13 @@ const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a
           ) : (
             <>
               <li className="flex items-center">
-              <FaRegListAlt className="mr-3" />
+                <FaRegListAlt className="mr-3" />
                 <NavLink
                   to="analytics"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                      ? "bg-white rounded px-4 py-2 text-black"
+                      : "hover:bg-blue-700 rounded px-4 py-2"
                   }
                 >
                   Analytics
@@ -91,8 +114,8 @@ const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a
                   to="participant-profile"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                      ? "bg-white rounded px-4 py-2 text-black"
+                      : "hover:bg-blue-700 rounded px-4 py-2"
                   }
                 >
                   Participant Profile
@@ -104,8 +127,8 @@ const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a
                   to="registered-camps"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                      ? "bg-white rounded px-4 py-2 text-black"
+                      : "hover:bg-blue-700 rounded px-4 py-2"
                   }
                 >
                   Registered Camps
@@ -117,73 +140,17 @@ const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a
                   to="payment-history"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                      ? "bg-white rounded px-4 py-2 text-black"
+                      : "hover:bg-blue-700 rounded px-4 py-2"
                   }
                 >
                   Payment History
                 </NavLink>
               </li>
-
-{/* <li className="flex items-center">
-                <FaUser className="mr-3" />
-                <NavLink
-                  to="organizer-profile"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
-                  }
-                >
-                  Organizer Profile
-                </NavLink>
-              </li>
-              <li className="flex items-center">
-                <FaPlus className="mr-3" />
-                <NavLink
-                  to="add-camp"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
-                  }
-                >
-                  Add A Camp
-                </NavLink>
-              </li>
-              <li className="flex items-center">
-                <FaClipboardList className="mr-3" />
-                <NavLink
-                  to="manage-camps"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
-                  }
-                >
-                  Manage Camps
-                </NavLink>
-              </li>
-              <li className="flex items-center">
-                <FaRegListAlt className="mr-3" />
-                <NavLink
-                  to="manage-registered-camps"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "bg-white rounded px-4 py-2 transition-colors text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
-                  }
-                >
-                  Manage Registered Camps
-                </NavLink>
-              </li> */}
-
-              
             </>
           )}
         </ul>
 
-        {/* Divider */}
         <hr className="border-t border-blue-500 my-6" />
 
         {/* Shared Routes */}
@@ -194,8 +161,8 @@ const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a
               to="/"
               className={({ isActive }) =>
                 isActive
-                  ? "bg-blue-800 rounded px-4 py-2 transition-colors text-white"
-                  : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                  ? "bg-blue-800 rounded px-4 py-2 text-white"
+                  : "hover:bg-blue-700 rounded px-4 py-2"
               }
             >
               Home
@@ -207,8 +174,8 @@ const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a
               to="/available-camps"
               className={({ isActive }) =>
                 isActive
-                  ? "bg-blue-800 rounded px-4 py-2 transition-colors text-white"
-                  : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                  ? "bg-blue-800 rounded px-4 py-2 text-white"
+                  : "hover:bg-blue-700 rounded px-4 py-2"
               }
             >
               Available Camps
@@ -217,22 +184,33 @@ const Dashboard = ({ isOrganizer }) => { // Make sure to pass `isOrganizer` as a
           <li className="flex items-center">
             <FaEnvelope className="mr-3" />
             <NavLink
-              to="/"
+              to="/contact"
               className={({ isActive }) =>
                 isActive
-                  ? "bg-blue-800 rounded px-4 py-2 transition-colors text-white"
-                  : "hover:bg-blue-700 rounded px-4 py-2 transition-colors"
+                  ? "bg-blue-800 rounded px-4 py-2 text-white"
+                  : "hover:bg-blue-700 rounded px-4 py-2"
               }
             >
               Contact
             </NavLink>
           </li>
         </ul>
-      </nav>
+      </div>
 
-      {/* Dashboard Content */}
-      <div className="dashboard-content flex-1 p-4 sm:p-6 max-w-5xl mx-auto w-full">
-        <h1 className="text-2xl font-bold text-gray-700 mb-4 text-center">
+      {/* Content Area */}
+      <div className="flex-1 p-4 sm:ml-64">
+        <div className="sm:hidden flex justify-between items-center mb-4">
+          <h1 className="text-xl font-bold">
+            {isOrganizer ? "Organizer Dashboard" : "Participant Dashboard"}
+          </h1>
+          <button
+            className="text-2xl text-blue-600 focus:outline-none"
+            onClick={toggleSidebar}
+          >
+            <FaBars />
+          </button>
+        </div>
+        <h1 className="text-2xl font-bold text-gray-700 mb-4 hidden sm:block">
           {isOrganizer ? "Organizer Dashboard" : "Participant Dashboard"}
         </h1>
         <Outlet />

@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const ParticipantProfile = ({ participantId }) => {
+const ParticipantProfile = () => {
+  const { participantId } = useParams();
   const [participant, setParticipant] = useState({});
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    // Fetch participant data
     const fetchParticipant = async () => {
-      const response = await fetch(`http://localhost:5000/participants/${participantId}`);
-      const data = await response.json();
-      setParticipant(data);
+      try {
+        const response = await fetch(`http://localhost:5000/participants/${participantId}`);
+        const data = await response.json();
+        setParticipant(data);
+      } catch (error) {
+        console.error("Error fetching participant:", error);
+      }
     };
 
     fetchParticipant();
@@ -22,22 +28,23 @@ const ParticipantProfile = ({ participantId }) => {
 
   const handleUpdate = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/participants/${participantId}`, {
+      const response = await fetch(`http://localhost:5000/participants/${participant._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(participant),
       });
-
+  
       if (response.ok) {
-        alert("Profile updated successfully!");
+        toast("Profile updated successfully!");
         setEditMode(false);
       } else {
-        alert("Failed to update profile.");
+        toast("Failed to update profile.");
       }
     } catch (error) {
       console.error("Error updating profile:", error);
     }
   };
+  
 
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6 mt-8">
@@ -58,7 +65,7 @@ const ParticipantProfile = ({ participantId }) => {
                 <strong>Email:</strong> {participant.email || "N/A"}
               </p>
               <p className="text-lg font-medium text-gray-700">
-                <strong>Contact:</strong> {participant.contact || "N/A"}
+                <strong>Contact:</strong> {participant.phone || "N/A"}
               </p>
             </div>
           </div>
@@ -104,10 +111,10 @@ const ParticipantProfile = ({ participantId }) => {
           />
           <input
             type="text"
-            name="contact"
-            value={participant.contact || ""}
+            name="phone"
+            value={participant.phone || ""}
             onChange={handleInputChange}
-            placeholder="Contact"
+            placeholder="Phone"
             className="w-full p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
           />
           <div className="flex space-x-4">
