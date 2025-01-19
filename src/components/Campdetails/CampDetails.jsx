@@ -7,8 +7,11 @@ const CampDetails = ({ loggedInUser }) => {
   const [camp, setCamp] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
   const [participant, setParticipant] = useState({
-    name: loggedInUser?.displayName || "",  // Assuming `loggedInUser` contains name
-    email: loggedInUser?.email || "",  // Assuming `loggedInUser` contains email
+    name: loggedInUser?.name || "",  // Ensure these values are set
+    email: loggedInUser?.email || "",
+    CampName: "",
+    campFees: "",
+    location: "",
     age: "",
     phone: "",
     gender: "",
@@ -29,9 +32,10 @@ const CampDetails = ({ loggedInUser }) => {
 
   const handleSubmit = () => {
     // Add campId to the participant data
-  const participantWithCampId = { ...participant, campId: id };
+    const participantWithCampId = { ...participant, campId: id };
+
     // Save participant registration info to database
-    fetch("http://localhost:5000/register-participant", {
+    fetch("http://localhost:5000/participants", { 
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -40,19 +44,19 @@ const CampDetails = ({ loggedInUser }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.message === 'Registration successful'){
+        if (data.message === 'Registration successful') {
+            setCamp({ ...camp, participantCount: camp.participantCount + 1 });  // Update participant count
+            setModalOpen(false);  // Close the modal
             toast.success('Registration successful! You have joined the camp.');
-            setCamp({ ...camp, participantCount: camp.participantCount + 1 });
-            setModalOpen(false);
-          } else {
+        } else {
             toast.error(data.message || 'Error registering participant. Please try again.');
-          }
-        })
-        .catch((error) => {
-          toast.error('Error registering participant. Please try again.');
-          console.error("Error registering participant:", error);
-        });
-    };
+        }
+      })
+      .catch((error) => {
+        toast.error('Error registering participant. Please try again.');
+        console.error("Error registering participant:", error);
+      });
+  };
 
   return (
     <div className="p-5">
@@ -131,7 +135,7 @@ const CampDetails = ({ loggedInUser }) => {
                 <label className="block font-semibold">Participant Name</label>
                 <input
                   type="text"
-                  value={participant.displayName}
+                  value={loggedInUser?.name || ""}
                   readOnly
                   className="w-full p-2 border rounded-md bg-gray-100"
                 />
@@ -140,7 +144,7 @@ const CampDetails = ({ loggedInUser }) => {
                 <label className="block font-semibold">Participant Email</label>
                 <input
                   type="email"
-                  value={participant.email}
+                  value={loggedInUser?.email || ""}
                   readOnly
                   className="w-full p-2 border rounded-md bg-gray-100"
                 />
@@ -197,16 +201,14 @@ const CampDetails = ({ loggedInUser }) => {
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"
-                  className="bg-teal-500 text-white py-2 px-6
-                  hover:bg-teal-600 rounded-lg mt-4"
+                  className="bg-teal-500 text-white py-2 px-6 hover:bg-teal-600 rounded-lg mt-4"
                   onClick={handleSubmit}
                 >
                   Register
                 </button>
                 <button
                   type="button"
-                  className="bg-gray-500
-                  hover:bg-gray-600 text-white py-2 px-6 rounded-lg mt-4"
+                  className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-lg mt-4"
                   onClick={() => setModalOpen(false)}
                 >
                   Close

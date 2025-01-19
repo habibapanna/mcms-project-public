@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../firebase/firebase.config";
+import { setItem } from "localforage";
 
 export const AuthContext = createContext(null);
 
@@ -62,9 +63,29 @@ const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
             console.log("current user", currentUser);
+            // if(currentUser){
+            //     // get token and store client
+            //     const userInfo = { email: currentUser.email };
+            //     fetch("http://localhost:5000/jwt", {
+            //         method: "POST",
+            //         headers: {
+            //           "Content-Type": "application/json",
+            //         },
+            //         body: JSON.stringify(userInfo),
+            //       }, userInfo)
+            //       .then(res =>{
+            //         if(res.formData.token) {
+            //            localStorage.setItem('access-token', res.data.token);
+            //         }
+            //       })
+            // }
+            // else{
+            //     // TODO: remove token
+            //     localStorage.removeItem('access-token');
+            // }
             setLoading(false);
         });
         return () => {
