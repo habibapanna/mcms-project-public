@@ -3,7 +3,10 @@ import BannerSection from './BannerSection/BannerSection';
 import PopularCamps from '../../../components/PopularCamps/PopularCamps';
 import FeedbackForm from '../../../components/FeedbackForm/FeedbackForm';
 import FeedbackDisplay from '../../../components/FeedbackDisplay/FeedbackDisplay';
-import UpcomingCamps from '../../../components/UpcomingCamps/UpcomingCamps';
+import CampFinder from '../../../components/CampFinder/CampFinder';
+
+
+
 
 
 const Home = () => {
@@ -12,8 +15,8 @@ const Home = () => {
             <BannerSection></BannerSection>
             <PopularCamps></PopularCamps>
             <FeedbackForm></FeedbackForm>
-            {/* <FeedbackDisplay></FeedbackDisplay>
-            <UpcomingCamps></UpcomingCamps> */}
+            <FeedbackDisplay></FeedbackDisplay>
+            <CampFinder></CampFinder>
             
             
         </div>
