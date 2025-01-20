@@ -8,6 +8,7 @@ const ManageCamps = () => {
   const [editingCamp, setEditingCamp] = useState(null);
   const [updatedDetails, setUpdatedDetails] = useState({});
 
+  // Fetch all camps
   useEffect(() => {
     fetch("http://localhost:5000/camps")
       .then((res) => res.json())
@@ -15,12 +16,8 @@ const ManageCamps = () => {
       .catch((err) => console.error("Error fetching camps:", err));
   }, []);
 
+  // Handle delete
   const handleDelete = (campId) => {
-    if (!campId) {
-      toast.error("Camp ID is missing!");
-      return;
-    }
-
     fetch(`http://localhost:5000/camps/${campId}`, { method: "DELETE" })
       .then((res) => res.json())
       .then((data) => {
@@ -37,9 +34,60 @@ const ManageCamps = () => {
       });
   };
 
+  // Handle edit button click
+  const handleEditClick = (camp) => {
+    setEditingCamp(camp);
+    setUpdatedDetails({ ...camp });
+  };
+
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedDetails((prevDetails) => ({ ...prevDetails, [name]: value }));
+  };
+
+  // Handle update
+  const handleUpdate = (id) => {
+    console.log("Updating camp with ID:", id); // Debug log
+    console.log("Updated Details:", updatedDetails); // Debug log
+  
+    fetch(`http://localhost:5000/camps/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedDetails),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data) {
+          toast.success("Camp updated successfully!");
+          setCamps((prevCamps) =>
+            prevCamps.map((camp) =>
+              camp._id === editingCamp._id ? { ...camp, ...updatedDetails } : camp
+            )
+          );
+          setEditingCamp(null);
+        } else {
+          toast.error("Failed to update camp.");
+        }
+      })
+      .catch((err) => {
+        toast.error("Error updating camp!");
+        console.error("Error updating camp:", err);
+      });
+  };
+  
+
   return (
     <div className="p-6 min-h-screen">
       <ToastContainer />
+      <h2 className="text-3xl font-bold mb-6">Manage Camps</h2>
       <div className="overflow-x-auto">
         <table className="table-auto w-full bg-white shadow-md rounded-lg">
           <thead>
@@ -77,6 +125,70 @@ const ManageCamps = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Edit Modal */}
+      {editingCamp && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h3 className="text-xl font-bold mb-4">Edit Camp</h3>
+            <label className="block mb-2">
+              Name:
+              <input
+                type="text"
+                name="campName"
+                value={updatedDetails.campName || ""}
+                onChange={handleInputChange}
+                className="border w-full px-2 py-1 rounded"
+              />
+            </label>
+            <label className="block mb-2">
+              Date & Time:
+              <input
+                type="datetime-local"
+                name="dateTime"
+                value={updatedDetails.dateTime || ""}
+                onChange={handleInputChange}
+                className="border w-full px-2 py-1 rounded"
+              />
+            </label>
+            <label className="block mb-2">
+              Location:
+              <input
+                type="text"
+                name="location"
+                value={updatedDetails.location || ""}
+                onChange={handleInputChange}
+                className="border w-full px-2 py-1 rounded"
+              />
+            </label>
+            <label className="block mb-4">
+              Healthcare Professional:
+              <input
+                type="text"
+                name="healthcareProfessional"
+                value={updatedDetails.healthcareProfessional || ""}
+                onChange={handleInputChange}
+                className="border w-full px-2 py-1 rounded"
+              />
+            </label>
+            <div className="flex space-x-2">
+            <button
+  onClick={() => handleUpdate(editingCamp._id)} // Pass the camp ID
+  className="bg-green-500 text-white px-4 py-2 rounded"
+>
+  Update
+</button>
+
+              <button
+                onClick={() => setEditingCamp(null)}
+                className="bg-red-500 text-white px-4 py-2 rounded"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
