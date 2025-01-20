@@ -13,7 +13,7 @@ import { useState } from "react";
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const isOrganizer = false;
+  const isOrganizer = true;
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);

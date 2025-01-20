@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
 import { toast } from "react-toastify";
 
+
 const Register = () => {
     const {
         register,
@@ -54,6 +55,7 @@ const Register = () => {
                 const userInfo = {
                     email: result.user?.email,
                     name: result.user?.displayName,
+                    photo: result.user?.photoURL,
                 };
     
                 fetch("http://localhost:5000/users", {

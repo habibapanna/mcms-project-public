@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 
 const ManageRegisteredCamps = () => {
@@ -6,7 +7,7 @@ const ManageRegisteredCamps = () => {
 
   // Fetch registrations from the database
   useEffect(() => {
-    fetch("http://localhost:5000/registered-camps")
+    fetch("http://localhost:5000/participants")
       .then((res) => res.json())
       .then((data) => setRegistrations(data))
       .catch((err) => console.error("Error fetching registrations:", err));
@@ -23,7 +24,7 @@ const ManageRegisteredCamps = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === "Registration confirmed successfully") {
-          alert("Registration confirmed!");
+          toast("Registration confirmed!");
           setRegistrations((prevRegistrations) =>
             prevRegistrations.map((registration) =>
               registration._id === registrationId
@@ -39,11 +40,11 @@ const ManageRegisteredCamps = () => {
   // Handle cancellation
   const handleCancel = (registrationId, isPaid, isConfirmed) => {
     if (isPaid && isConfirmed) {
-      alert("Cancellation not allowed for confirmed and paid registrations.");
+      toast("Cancellation not allowed for confirmed and paid registrations.");
       return;
     }
 
-    const confirmCancel = window.confirm("Are you sure you want to cancel this registration?");
+    const confirmCancel = toast("Are you sure you want to cancel this registration?");
     if (confirmCancel) {
       fetch(`http://localhost:5000/cancel-registration/${registrationId}`, {
         method: "DELETE",
@@ -51,7 +52,7 @@ const ManageRegisteredCamps = () => {
         .then((res) => res.json())
         .then((data) => {
           if (data.message === "Registration canceled successfully") {
-            alert("Registration canceled successfully!");
+            toast("Registration canceled successfully!");
             setRegistrations((prevRegistrations) =>
               prevRegistrations.filter((registration) => registration._id !== registrationId)
             );
@@ -79,9 +80,9 @@ const ManageRegisteredCamps = () => {
           <tbody>
             {registrations.map((registration) => (
               <tr key={registration._id} className="border-b">
-                <td className="px-4 py-2">{registration.campName}</td>
+                <td className="px-4 py-2">{registration.CampName}</td>
                 <td className="px-4 py-2">${registration.campFees}</td>
-                <td className="px-4 py-2">{registration.participantName}</td>
+                <td className="px-4 py-2">{registration.name}</td>
                 <td className="px-4 py-2">
                   <span
                     className={`px-2 py-1 rounded text-white text-sm ${
