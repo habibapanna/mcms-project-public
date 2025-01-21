@@ -1,39 +1,32 @@
-import { useState, useEffect } from 'react';
-import { FaUser, FaTrash, FaUserTie, FaUsers } from 'react-icons/fa';
+import { FaTrash, FaUsers } from 'react-icons/fa';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
+import { useQuery } from '@tanstack/react-query';
 
 const AllUser = () => {
-  const { axiosSecure } = useAxiosSecure();
-  const [users, setUsers] = useState([]);
-  const [error, setError] = useState(null);
-
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/users'); // Update the URL if necessary
-      if (!response.ok) {
-        throw new Error('Failed to fetch users');
-      }
-      const data = await response.json();
-      setUsers(data);
-    } catch (err) {
-      setError(err.message);
-      toast.error(`Error: ${err.message}`);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers(); // Fetch users when the component mounts
-  }, []);
+  const axiosSecure = useAxiosSecure();
+  // Destructure error from useQuery
+  const {
+    data: users = [],
+    error, // Add error here
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const res = await axiosSecure.get('/users');
+      return res.data;
+    },
+  });
 
   const handleMakeOrganizer = (user) => {
     axiosSecure
       .patch(`/users/organizer/${user._id}`)
       .then((res) => {
         if (res.data.modifiedCount > 0) {
-          fetchUsers(); // Re-fetch the users list after the role change
+          refetch(); // Re-fetch the users list after the role change
           Swal.fire({
             position: 'top-end',
             icon: 'success',
@@ -49,9 +42,7 @@ const AllUser = () => {
       });
   };
 
-  // Handle user deletion
   const handleDelete = async (userId) => {
-    // Show a custom toast confirmation
     toast.info(
       <div>
         <p>Are you sure you want to delete this user?</p>
@@ -59,13 +50,11 @@ const AllUser = () => {
           <button
             onClick={async () => {
               try {
-                const response = await fetch(`http://localhost:5000/users/${userId}`, {
-                  method: 'DELETE',
-                });
-                if (!response.ok) {
+                const response = await axiosSecure.delete(`/users/${userId}`);
+                if (response.status !== 200) {
                   throw new Error('Failed to delete user');
                 }
-                setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
+                refetch();
                 toast.dismiss();
                 toast.success('User deleted successfully!');
               } catch (err) {
@@ -86,7 +75,7 @@ const AllUser = () => {
         </div>
       </div>,
       {
-        autoClose: false, // Prevent auto-dismissal
+        autoClose: false,
         closeOnClick: false,
       }
     );
@@ -96,8 +85,9 @@ const AllUser = () => {
     <div>
       <ToastContainer />
       <h1 className="text-2xl font-bold mb-4">All Users</h1>
-      {error && <p className="text-red-500">Error: {error}</p>}
-      {!error && users.length === 0 && <p>Loading...</p>}
+      {error && <p className="text-red-500">Error: {error.message}</p>}
+      {isLoading && <p>Loading...</p>}
+      {!isLoading && users.length === 0 && <p>No users found.</p>}
       <table className="min-w-full border-collapse border border-gray-300">
         <thead>
           <tr>

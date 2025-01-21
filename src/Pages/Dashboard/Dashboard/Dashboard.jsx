@@ -8,14 +8,14 @@ import {
   FaHome,
   FaCampground,
   FaEnvelope,
-  FaUserCircle,
   FaUserFriends,
 } from "react-icons/fa";
 import { useState } from "react";
+import useOrganizer from "../../../hooks/useOrganizer";
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const isOrganizer = true;
+  const [isOrganizer] = useOrganizer();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
