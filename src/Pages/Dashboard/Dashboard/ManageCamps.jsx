@@ -16,6 +16,35 @@ const ManageCamps = () => {
       .catch((err) => console.error("Error fetching camps:", err));
   }, []);
 
+  // Custom delete confirmation using toast
+  const handleDeleteConfirmation = (campId) => {
+    toast(
+      ({ closeToast }) => (
+        <div>
+          <p>Are you sure you want to delete this camp?</p>
+          <div className="flex space-x-2 mt-2">
+            <button
+              onClick={() => {
+                handleDelete(campId);
+                closeToast();
+              }}
+              className="bg-red-500 text-white px-3 py-1 rounded"
+            >
+              Yes
+            </button>
+            <button
+              onClick={closeToast}
+              className="bg-gray-500 text-white px-3 py-1 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { autoClose: false }
+    );
+  };
+
   // Handle delete
   const handleDelete = (campId) => {
     fetch(`http://localhost:5000/camps/${campId}`, { method: "DELETE" })
@@ -48,9 +77,6 @@ const ManageCamps = () => {
 
   // Handle update
   const handleUpdate = (id) => {
-    console.log("Updating camp with ID:", id); // Debug log
-    console.log("Updated Details:", updatedDetails); // Debug log
-  
     fetch(`http://localhost:5000/camps/${id}`, {
       method: "PUT",
       headers: {
@@ -58,12 +84,7 @@ const ManageCamps = () => {
       },
       body: JSON.stringify(updatedDetails),
     })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
         if (data) {
           toast.success("Camp updated successfully!");
@@ -82,7 +103,6 @@ const ManageCamps = () => {
         console.error("Error updating camp:", err);
       });
   };
-  
 
   return (
     <div className="p-6 min-h-screen">
@@ -114,7 +134,7 @@ const ManageCamps = () => {
                     <FaEdit size={15} />
                   </button>
                   <button
-                    onClick={() => handleDelete(camp._id)}
+                    onClick={() => handleDeleteConfirmation(camp._id)}
                     className="text-red-500 hover:text-red-700"
                   >
                     <FaTrash size={15} />
@@ -172,13 +192,12 @@ const ManageCamps = () => {
               />
             </label>
             <div className="flex space-x-2">
-            <button
-  onClick={() => handleUpdate(editingCamp._id)} // Pass the camp ID
-  className="bg-green-500 text-white px-4 py-2 rounded"
->
-  Update
-</button>
-
+              <button
+                onClick={() => handleUpdate(editingCamp._id)}
+                className="bg-green-500 text-white px-4 py-2 rounded"
+              >
+                Update
+              </button>
               <button
                 onClick={() => setEditingCamp(null)}
                 className="bg-red-500 text-white px-4 py-2 rounded"

@@ -50,14 +50,19 @@ const Register = () => {
     const handleGoogleLogin = () => {
         googleLogIn()
             .then((result) => {
-                console.log(result.user); // Fixed typo
+                // Check if the user object exists
+                if (!result.user) {
+                    throw new Error("Google login did not return a user object.");
+                }
     
+                // Prepare user information
                 const userInfo = {
-                    email: result.user?.email,
-                    name: result.user?.displayName,
-                    photo: result.user?.photoURL,
+                    email: result.user.email,
+                    name: result.user.displayName,
+                    photo: result.user.photoURL,
                 };
     
+                // Save the user to the database
                 fetch("http://localhost:5000/users", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -65,19 +70,22 @@ const Register = () => {
                 })
                     .then((res) => res.json())
                     .then((data) => {
+                        console.log("Server Response:", data);
+                        
+                        // Handle navigation based on the server response
                         if (data.insertedId) {
-                            console.log("User added to database:", data);
                             toast.success("Google login successful!", { position: "top-right" });
-                            navigate("/"); // Navigate after successful data save
                         } else if (data.message === "user already exists") {
                             toast.info("User already exists!", { position: "top-right" });
-                            navigate("/"); // Navigate if the user exists
                         } else {
-                            toast.error("Unexpected response from server.", { position: "top-right" });
+                            toast.error("Unexpected response from the server.", { position: "top-right" });
                         }
+    
+                        // Navigate to home
+                        navigate("/");
                     })
                     .catch((err) => {
-                        console.error("Error storing user:", err);
+                        console.error("Error storing user in the database:", err);
                         toast.error("Failed to store user in database.", { position: "top-right" });
                     });
             })
@@ -87,7 +95,7 @@ const Register = () => {
             });
     };
     
-
+    
     return (
         <div className="min-h-screen bg-gradient-to-r from-green-100 to-blue-100 flex items-center justify-center">
             <div className="hero-content flex-col">

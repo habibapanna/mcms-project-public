@@ -8,6 +8,8 @@ import {
   FaHome,
   FaCampground,
   FaEnvelope,
+  FaUserCircle,
+  FaUserFriends,
 } from "react-icons/fa";
 import { useState } from "react";
 
@@ -90,6 +92,19 @@ const Dashboard = () => {
                   }
                 >
                   Manage Registered Camps
+                </NavLink>
+              </li>
+              <li className="flex items-center">
+                <FaUserFriends className="mr-3" />
+                <NavLink
+                  to="all-user"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "bg-white rounded px-4 py-2 text-black"
+                      : "hover:bg-blue-700 rounded px-4 py-2"
+                  }
+                >
+                  All-User
                 </NavLink>
               </li>
             </>

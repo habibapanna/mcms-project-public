@@ -20,6 +20,8 @@ import Analytics from "../Pages/Dashboard/Dashboard/Analytics/Analytics";
 import RegisteredCamps from "../Pages/Dashboard/Dashboard/RegisteredCamps/RegisteredCamps";
 import ParticipantProfile from "../Pages/Dashboard/Dashboard/ParticipantProfile/ParticipantProfile";
 import PaymentHistory from "../Pages/Dashboard/Dashboard/PaymentHistory/PaymentHistory";
+import AllParticipants from "../Pages/Dashboard/Dashboard/AllUser/AllUser";
+import AllUser from "../Pages/Dashboard/Dashboard/AllUser/AllUser";
 
 
 
@@ -58,7 +60,7 @@ export const router = createBrowserRouter([
             },
         ],
     },
-
+// admin dashboard
     {
         path: 'dashboard',
         element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
@@ -73,6 +75,7 @@ export const router = createBrowserRouter([
             },
             { path: 'manage-camps', element: <ManageCamps /> },
             { path: 'manage-registered-camps', element: <ManageRegisteredCamps /> },
+            { path: 'all-user', element: <AllUser></AllUser>},
             // Participant Dashboard Routes
             {
                 path: 'analytics',

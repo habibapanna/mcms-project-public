@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
+import "react-toastify/dist/ReactToastify.css";
 
 const ManageRegisteredCamps = () => {
   const [registrations, setRegistrations] = useState([]);
 
-  // Fetch registrations from the database
   useEffect(() => {
     fetch("http://localhost:5000/participants")
       .then((res) => res.json())
@@ -13,7 +12,6 @@ const ManageRegisteredCamps = () => {
       .catch((err) => console.error("Error fetching registrations:", err));
   }, []);
 
-  // Handle confirmation status update
   const handleConfirm = (registrationId) => {
     fetch(`http://localhost:5000/confirm-registration/${registrationId}`, {
       method: "PUT",
@@ -24,42 +22,69 @@ const ManageRegisteredCamps = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.message === "Registration confirmed successfully") {
-          toast("Registration confirmed!");
-          setRegistrations((prevRegistrations) =>
-            prevRegistrations.map((registration) =>
-              registration._id === registrationId
-                ? { ...registration, confirmationStatus: "Confirmed" }
-                : registration
+          toast.success("Registration confirmed!");
+          setRegistrations((prev) =>
+            prev.map((reg) =>
+              reg._id === registrationId
+                ? { ...reg, confirmationStatus: "Confirmed" }
+                : reg
             )
           );
         }
       })
-      .catch((err) => console.error("Error confirming registration:", err));
+      .catch((err) => toast.error("Error confirming registration: " + err));
   };
 
-  // Handle cancellation
   const handleCancel = (registrationId, isPaid, isConfirmed) => {
     if (isPaid && isConfirmed) {
-      toast("Cancellation not allowed for confirmed and paid registrations.");
+      toast.info(
+        "Cancellation not allowed for confirmed and paid registrations."
+      );
       return;
     }
 
-    const confirmCancel = toast("Are you sure you want to cancel this registration?");
-    if (confirmCancel) {
-      fetch(`http://localhost:5000/cancel-registration/${registrationId}`, {
-        method: "DELETE",
+    // Display confirmation toast
+    toast(
+      ({ closeToast }) => (
+        <div>
+          <p>Are you sure you want to cancel this registration?</p>
+          <div className="flex justify-between mt-2">
+            <button
+              onClick={() => {
+                cancelRegistration(registrationId);
+                closeToast(); // Close toast after action
+              }}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded"
+            >
+              Yes
+            </button>
+            <button
+              onClick={closeToast}
+              className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { autoClose: false } // Wait for user interaction
+    );
+  };
+
+  const cancelRegistration = (registrationId) => {
+    fetch(`http://localhost:5000/cancel-registration/${registrationId}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "Registration canceled successfully") {
+          toast.success("Registration canceled successfully!");
+          setRegistrations((prev) =>
+            prev.filter((reg) => reg._id !== registrationId)
+          );
+        }
       })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.message === "Registration canceled successfully") {
-            toast("Registration canceled successfully!");
-            setRegistrations((prevRegistrations) =>
-              prevRegistrations.filter((registration) => registration._id !== registrationId)
-            );
-          }
-        })
-        .catch((err) => console.error("Error canceling registration:", err));
-    }
+      .catch((err) => toast.error("Error canceling registration: " + err));
   };
 
   return (
@@ -78,26 +103,26 @@ const ManageRegisteredCamps = () => {
             </tr>
           </thead>
           <tbody>
-            {registrations.map((registration) => (
-              <tr key={registration._id} className="border-b">
-                <td className="px-4 py-2">{registration.CampName}</td>
-                <td className="px-4 py-2">${registration.campFees}</td>
-                <td className="px-4 py-2">{registration.name}</td>
+            {registrations.map((reg) => (
+              <tr key={reg._id} className="border-b">
+                <td className="px-4 py-2">{reg.CampName}</td>
+                <td className="px-4 py-2">${reg.campFees}</td>
+                <td className="px-4 py-2">{reg.name}</td>
                 <td className="px-4 py-2">
                   <span
                     className={`px-2 py-1 rounded text-white text-sm ${
-                      registration.paymentStatus === "Paid"
+                      reg.paymentStatus === "Paid"
                         ? "bg-green-500"
                         : "bg-red-500"
                     }`}
                   >
-                    {registration.paymentStatus}
+                    {reg.paymentStatus}
                   </span>
                 </td>
                 <td className="px-4 py-2">
-                  {registration.confirmationStatus === "Pending" ? (
+                  {reg.confirmationStatus === "Pending" ? (
                     <button
-                      onClick={() => handleConfirm(registration._id)}
+                      onClick={() => handleConfirm(reg._id)}
                       className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm"
                     >
                       Pending
@@ -112,20 +137,20 @@ const ManageRegisteredCamps = () => {
                   <button
                     onClick={() =>
                       handleCancel(
-                        registration._id,
-                        registration.paymentStatus === "Paid",
-                        registration.confirmationStatus === "Confirmed"
+                        reg._id,
+                        reg.paymentStatus === "Paid",
+                        reg.confirmationStatus === "Confirmed"
                       )
                     }
                     className={`px-3 py-1 rounded text-sm text-white ${
-                      registration.paymentStatus === "Paid" &&
-                      registration.confirmationStatus === "Confirmed"
+                      reg.paymentStatus === "Paid" &&
+                      reg.confirmationStatus === "Confirmed"
                         ? "bg-gray-400 cursor-not-allowed"
                         : "bg-red-500 hover:bg-red-600"
                     }`}
                     disabled={
-                      registration.paymentStatus === "Paid" &&
-                      registration.confirmationStatus === "Confirmed"
+                      reg.paymentStatus === "Paid" &&
+                      reg.confirmationStatus === "Confirmed"
                     }
                   >
                     Cancel
