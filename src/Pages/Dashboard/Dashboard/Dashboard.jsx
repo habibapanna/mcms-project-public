@@ -13,9 +13,10 @@ import {
 import { useState } from "react";
 import useOrganizer from "../../../hooks/useOrganizer";
 
+
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isOrganizer] = useOrganizer();
+const [isOrganizer] = useOrganizer();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);

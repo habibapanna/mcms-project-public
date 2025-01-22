@@ -1,140 +1,117 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useState } from 'react';
+import useParticipant from '../../../../hooks/useParticipant';
+import { toast } from 'react-toastify';
+
 
 const ParticipantProfile = () => {
-  const { participantId } = useParams();
-  const [participant, setParticipant] = useState({});
-  const [editMode, setEditMode] = useState(false);
+    const { participant, isLoading, updateParticipant } = useParticipant();
+    const [isEditing, setIsEditing] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        contact: '',
+        image: '',
+    });
 
-  useEffect(() => {
-    const fetchParticipant = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/participants/${participantId}`);
-        const data = await response.json();
-        setParticipant(data);
-      } catch (error) {
-        console.error("Error fetching participant:", error);
-      }
+    const handleEdit = () => {
+        setFormData({
+            name: participant?.name || '',
+            email: participant?.email || '',
+            contact: participant?.contact || '',
+            image: participant?.image || '',
+        });
+        setIsEditing(true);
     };
 
-    fetchParticipant();
-  }, [participantId]);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setParticipant((prev) => ({ ...prev, [name]: value }));
-  };
+    const handleSave = () => {
+        updateParticipant(formData)
+            .then(() => {
+                toast('Profile updated successfully');
+                setIsEditing(false);
+            })
+            .catch((error) => {
+                toast('Failed to update profile');
+                console.error(error);
+            });
+    };
 
-  const handleUpdate = async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/participants/${participant._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(participant),
-      });
-  
-      if (response.ok) {
-        toast("Profile updated successfully!");
-        setEditMode(false);
-      } else {
-        toast("Failed to update profile.");
-      }
-    } catch (error) {
-      console.error("Error updating profile:", error);
+    if (isLoading) {
+        return <div>Loading...</div>;
     }
-  };
-  
 
-  return (
-    <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6 mt-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-4">Participant Profile</h1>
-      {!editMode ? (
-        <div className="space-y-4">
-          <div className="flex items-center space-x-4">
-            <img
-              src={participant.image || "https://via.placeholder.com/100"}
-              alt="Participant"
-              className="w-20 h-20 rounded-full shadow-md"
-            />
-            <div>
-              <p className="text-lg font-medium text-gray-700">
-                <strong>Name:</strong> {participant.name || "N/A"}
-              </p>
-              <p className="text-lg font-medium text-gray-700">
-                <strong>Email:</strong> {participant.email || "N/A"}
-              </p>
-              <p className="text-lg font-medium text-gray-700">
-                <strong>Contact:</strong> {participant.phone || "N/A"}
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={() => setEditMode(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700"
-          >
-            Update Profile
-          </button>
+    return (
+        <div className="p-6 bg-white shadow rounded-lg">
+            <h2 className="text-2xl font-bold mb-4">Participant Profile</h2>
+            {!isEditing ? (
+                <div>
+                    <p><strong>Name:</strong> {participant?.name}</p>
+                    <p><strong>Email:</strong> {participant?.email}</p>
+                    <p><strong>Contact:</strong> {participant?.contact || 'N/A'}</p>
+                    <img
+                        src={participant?.image || 'https://via.placeholder.com/150'}
+                        alt="Profile"
+                        className="w-32 h-32 rounded-full mt-4"
+                    />
+                    <button
+                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                        onClick={handleEdit}
+                    >
+                        Edit Profile
+                    </button>
+                </div>
+            ) : (
+                <div>
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            className="w-full border rounded p-2"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium">Contact</label>
+                        <input
+                            type="text"
+                            name="contact"
+                            value={formData.contact}
+                            onChange={handleChange}
+                            className="w-full border rounded p-2"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium">Image URL</label>
+                        <input
+                            type="text"
+                            name="image"
+                            value={formData.image}
+                            onChange={handleChange}
+                            className="w-full border rounded p-2"
+                        />
+                    </div>
+                    <button
+                        className="mr-4 px-4 py-2 bg-green-500 text-white rounded"
+                        onClick={handleSave}
+                    >
+                        Save
+                    </button>
+                    <button
+                        className="px-4 py-2 bg-gray-300 text-black rounded"
+                        onClick={() => setIsEditing(false)}
+                    >
+                        Cancel
+                    </button>
+                </div>
+            )}
         </div>
-      ) : (
-        <div className="space-y-4">
-          <div className="flex items-center space-x-4">
-            <img
-              src={participant.image || "https://via.placeholder.com/100"}
-              alt="Participant"
-              className="w-20 h-20 rounded-full shadow-md"
-            />
-            <input
-              type="text"
-              name="image"
-              value={participant.image || ""}
-              onChange={handleInputChange}
-              placeholder="Image URL"
-              className="w-full p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <input
-            type="text"
-            name="name"
-            value={participant.name || ""}
-            onChange={handleInputChange}
-            placeholder="Name"
-            className="w-full p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="email"
-            name="email"
-            value={participant.email || ""}
-            onChange={handleInputChange}
-            placeholder="Email"
-            className="w-full p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="text"
-            name="phone"
-            value={participant.phone || ""}
-            onChange={handleInputChange}
-            placeholder="Phone"
-            className="w-full p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
-          />
-          <div className="flex space-x-4">
-            <button
-              onClick={handleUpdate}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700"
-            >
-              Save Changes
-            </button>
-            <button
-              onClick={() => setEditMode(false)}
-              className="px-4 py-2 bg-gray-600 text-white rounded-lg shadow-md hover:bg-gray-700"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default ParticipantProfile;

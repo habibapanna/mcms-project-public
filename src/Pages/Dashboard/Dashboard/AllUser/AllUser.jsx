@@ -7,13 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 
 const AllUser = () => {
   const axiosSecure = useAxiosSecure();
-  // Destructure error from useQuery
-  const {
-    data: users = [],
-    error, // Add error here
-    refetch,
-    isLoading,
-  } = useQuery({
+  const { data: users = [], refetch, isLoading, error } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
       const res = await axiosSecure.get('/users');

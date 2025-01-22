@@ -22,8 +22,7 @@ import ParticipantProfile from "../Pages/Dashboard/Dashboard/ParticipantProfile/
 import PaymentHistory from "../Pages/Dashboard/Dashboard/PaymentHistory/PaymentHistory";
 import AllParticipants from "../Pages/Dashboard/Dashboard/AllUser/AllUser";
 import AllUser from "../Pages/Dashboard/Dashboard/AllUser/AllUser";
-
-
+import OrganizerRoute from "./OrganizerRoute";
 
 
 
@@ -67,7 +66,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: 'organizer-profile',
-                element: <OrganizerProfile></OrganizerProfile>
+                element: <OrganizerRoute><OrganizerProfile></OrganizerProfile></OrganizerRoute>
             },
             {
                 path: 'add-camp',

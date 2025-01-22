@@ -1,8 +1,7 @@
 
 import axios from "axios";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../providers/AuthProvider";
+import useAuth from "./useAuth";
 
 const axiosSecure = axios.create({
     baseURL: 'http://localhost:5000'
@@ -10,7 +9,7 @@ const axiosSecure = axios.create({
 
 const useAxiosSecure = () => {
     const navigate = useNavigate();
-    const { user, logOut } = useContext(AuthContext);
+    const { logOut } = useAuth();
     axiosSecure.interceptors.request.use(function(config){
         const token = localStorage.getItem('access-token')
         // console.log('request stopped by interceptors', token);
@@ -31,9 +30,9 @@ axiosSecure.interceptors.response.use(function(response) {
         navigate('/login')
     }
     return Promise.reject(error);
-});
+})
 
-  return axiosSecure; // Return the axios instance directly
+  return axiosSecure; 
 };
 
 export default useAxiosSecure;
