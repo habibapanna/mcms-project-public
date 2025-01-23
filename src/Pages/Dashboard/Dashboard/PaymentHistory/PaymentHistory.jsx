@@ -1,70 +1,60 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const PaymentHistory = ({ participantId }) => {
-  const [paymentHistory, setPaymentHistory] = useState([]);
+const PaymentHistory = () => {
+  const [payments, setPayments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch payment history for the participant
     const fetchPaymentHistory = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/payments/${participantId}`);
-        const data = await response.json();
-        setPaymentHistory(data);
+        const response = await axios.get('http://localhost:5000/payments'); // Get all payments
+        console.log('Payment history response:', response.data);  // Log the response data
+        setPayments(response.data);
       } catch (error) {
-        console.error("Error fetching payment history:", error);
+        console.error('Error fetching payment history:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchPaymentHistory();
-  }, [participantId]);
+  }, []); // Empty dependency array means this will only run on mount
 
   return (
-    <div className="p-6 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4 text-center">Payment History</h1>
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full border border-gray-300 bg-white shadow-md">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-2 border">Camp Name</th>
-              <th className="px-4 py-2 border">Fees</th>
-              <th className="px-4 py-2 border">Payment Status</th>
-              <th className="px-4 py-2 border">Confirmation Status</th>
-              <th className="px-4 py-2 border">Transaction ID</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paymentHistory.length > 0 ? (
-              paymentHistory.map((payment) => (
-                <tr key={payment.transactionId} className="hover:bg-gray-50">
-                  <td className="px-4 py-2 border">{payment.campName}</td>
-                  <td className="px-4 py-2 border">${payment.fees}</td>
-                  <td className="px-4 py-2 border">
-                    {payment.paymentStatus === "Paid" ? (
-                      <span className="text-green-500 font-semibold">Paid</span>
-                    ) : (
-                      <span className="text-red-500 font-semibold">Unpaid</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-2 border">
-                    {payment.confirmationStatus === "Confirmed" ? (
-                      <span className="text-green-500 font-semibold">Confirmed</span>
-                    ) : (
-                      <span className="text-yellow-500 font-semibold">Pending</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-2 border">{payment.transactionId || "N/A"}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5" className="text-center py-4 text-gray-500">
-                  No payment history found.
-                </td>
+    <div className="container mx-auto px-4 py-6">
+      <h2 className="text-3xl font-bold text-gray-900 mb-6">Payment History</h2>
+
+      {loading ? (
+        <div className="text-center text-gray-500">Loading...</div>
+      ) : payments.length === 0 ? (
+        <div className="text-center text-gray-500">No payment history available.</div>
+      ) : (
+        <div className="overflow-x-auto bg-white shadow-md rounded-lg">
+          <table className="table-auto w-full text-sm text-left">
+            <thead>
+              <tr className="bg-gray-100 text-gray-700 border-b">
+                <th className="px-6 py-3 font-semibold">Camp Name</th>
+                <th className="px-6 py-3 font-semibold">Fees</th>
+                <th className="px-6 py-3 font-semibold">Payment Status</th>
+                <th className="px-6 py-3 font-semibold">Confirmation Status</th>
               </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {payments.map(payment => (
+                <tr key={payment._id} className="border-b hover:bg-gray-50">
+                  <td className="px-6 py-4">{payment.CampName}</td>
+                  <td className="px-6 py-4 text-gray-900">${payment.amount}</td>
+                  <td className={`px-6 py-4 ${payment.status === 'succeeded' ? 'text-green-500' : 'text-red-500'}`}>
+                    {payment.status === 'succeeded' ? 'Paid' : 'Failed'}
+                  </td>
+                  <td className="px-6 py-4">{payment.confirmationStatus || 'Pending'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

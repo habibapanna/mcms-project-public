@@ -20,10 +20,7 @@ import Analytics from "../Pages/Dashboard/Dashboard/Analytics/Analytics";
 import RegisteredCamps from "../Pages/Dashboard/Dashboard/RegisteredCamps/RegisteredCamps";
 import ParticipantProfile from "../Pages/Dashboard/Dashboard/ParticipantProfile/ParticipantProfile";
 import PaymentHistory from "../Pages/Dashboard/Dashboard/PaymentHistory/PaymentHistory";
-import AllParticipants from "../Pages/Dashboard/Dashboard/AllUser/AllUser";
 import AllUser from "../Pages/Dashboard/Dashboard/AllUser/AllUser";
-import OrganizerRoute from "./OrganizerRoute";
-
 
 
 export const router = createBrowserRouter([
@@ -44,7 +41,6 @@ export const router = createBrowserRouter([
                 path: 'camp-details/:id',
                 element: <PrivateRoute><CampDetails></CampDetails></PrivateRoute>
             },
-
             {
                 path: 'login',
                 element: <Login></Login>
@@ -66,7 +62,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: 'organizer-profile',
-                element: <OrganizerRoute><OrganizerProfile></OrganizerProfile></OrganizerRoute>
+                element: <OrganizerProfile></OrganizerProfile>
             },
             {
                 path: 'add-camp',

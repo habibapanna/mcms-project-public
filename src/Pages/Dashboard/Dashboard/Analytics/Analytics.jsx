@@ -1,43 +1,87 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend } from "recharts";
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
-const Analytics = ({ participantId }) => {
-  const [campData, setCampData] = useState([]);
+const Analytics = () => {
+  const [participants, setParticipants] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch registered camp data for the participant
-    const fetchCampData = async () => {
+    const fetchParticipants = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/registered-camps/${participantId}`);
-        const data = await response.json();
-        setCampData(data);
+        const response = await axios.get('http://localhost:5000/participants');
+        console.log(response.data); // Log to inspect the data structure
+        setParticipants(response.data);
       } catch (error) {
-        console.error("Error fetching camp data:", error);
+        console.error('Error fetching participants:', error);
+        setError('Failed to fetch participant data');
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchCampData();
-  }, [participantId]);
+    fetchParticipants();
+  }, []);
+
+  // Aggregate camp data
+  const campData = participants.reduce((acc, participant) => {
+    const { CampName, campFees } = participant;
+
+    // Check if the camp already exists in the accumulator
+    if (acc[CampName]) {
+      acc[CampName].count += 1;
+      acc[CampName].totalFee += campFees; // Adding campFees
+    } else {
+      acc[CampName] = { count: 1, totalFee: campFees }; // First time encountering this camp
+    }
+
+    return acc;
+  }, {});
+
+  // Prepare the chart data
+  const chartData = Object.keys(campData).map(campName => ({
+    name: campName,
+    value: campData[campName].totalFee, // You can use totalFee or count based on what you want
+  }));
+
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#FF4040'];
 
   return (
-    <div className="p-6 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4 text-center">Analytics</h1>
-      <div className="w-full h-96 bg-white shadow-md rounded-lg p-4">
-        {campData.length > 0 ? (
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={campData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="campName" />
-              <YAxis />
+    <div className="container mx-auto px-4 py-6">
+      <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center sm:text-4xl">
+        Analytics - Participant's Camp Registrations
+      </h2>
+
+      {loading ? (
+        <div className="text-center text-gray-500">Loading...</div>
+      ) : error ? (
+        <div className="text-center text-red-500">{error}</div>
+      ) : participants.length === 0 ? (
+        <div className="text-center text-gray-500">No participants registered yet.</div>
+      ) : (
+        <div className="bg-white shadow-md rounded-lg p-6 sm:p-8">
+          <h3 className="text-2xl font-semibold text-gray-800 mb-4 sm:text-3xl">Camp Registration Fees</h3>
+          <ResponsiveContainer width="100%" height={400}>
+            <PieChart>
+              <Pie
+                data={chartData}
+                dataKey="value"
+                nameKey="name"
+                outerRadius="80%"
+                fill="#8884d8"
+                label
+              >
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
               <Tooltip />
               <Legend />
-              <Bar dataKey="fees" fill="#8884d8" name="Fees (USD)" />
-            </BarChart>
+            </PieChart>
           </ResponsiveContainer>
-        ) : (
-          <p className="text-center text-gray-500">No analytics data available.</p>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

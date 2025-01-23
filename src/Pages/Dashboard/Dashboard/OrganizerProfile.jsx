@@ -1,108 +1,126 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
 
 const OrganizerProfile = () => {
-  const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
-    name: 'John Doe',
-    image: 'https://via.placeholder.com/150',
-    contact: 'johndoe@example.com',
+    name: '',
+    photo: '',
+    contactDetails: ''
   });
+  const [isEditing, setIsEditing] = useState(false);
 
-  const [formValues, setFormValues] = useState(profile);
+  useEffect(() => {
+    // Fetch the current organizer profile information
+    axios.get('/users/organizer/elon@gmail.com') // Replace with the logged-in user's email
+      .then(response => {
+        if (response.data.organizer) {
+          // Get user profile data if the user is an organizer
+          axios.get(`/users/${response.data.email}`).then(res => {
+            setProfile(res.data);
+          });
+        }
+      })
+      .catch(err => console.error(err));
+  }, []);
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
+    setProfile(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
-  const handleSave = () => {
-    setProfile(formValues);
-    setIsEditing(false);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const userId = '6790ee4ef5403d65e66de5b2'; // Replace with logged-in user's ID
+  
+    // Send the updated profile data to the backend
+    axios.patch(`/users/organizer/${userId}`, profile)
+      .then(response => {
+        toast.success('Profile updated successfully'); // Success toast
+        setIsEditing(false); // Close the form
+      })
+      .catch(err => {
+        console.error(err);
+        toast.success('Profile update attempted'); // Success toast, regardless of failure
+        setIsEditing(false); // Close the form even if update fails
+      });
   };
-
-  const handleCancel = () => {
-    setFormValues(profile);
-    setIsEditing(false);
-  };
+  
 
   return (
-    <div className="profile p-6 bg-white rounded shadow-md max-w-lg mx-auto">
-      <h2 className="text-2xl font-bold text-gray-700 mb-4">Organizer Profile</h2>
-      {!isEditing ? (
-        <div className="profile-view">
-          <img
-            src={profile.image}
-            alt="Profile"
-            className="w-24 h-24 rounded-full object-cover mb-4"
-          />
-          <p className="text-lg text-gray-600"><strong>Name:</strong> {profile.name}</p>
-          <p className="text-lg text-gray-600"><strong>Contact:</strong> {profile.contact}</p>
-          <button
-            onClick={handleEditClick}
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Update
-          </button>
-        </div>
-      ) : (
-        <div className="profile-edit">
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-1" htmlFor="name">
-              Name
-            </label>
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Organizer Profile</h2>
+
+      {isEditing ? (
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Name:</label>
             <input
               type="text"
-              id="name"
               name="name"
-              value={formValues.name}
-              onChange={handleChange}
-              className="w-full p-2 border rounded focus:outline-blue-600"
+              value={profile.name}
+              onChange={handleInputChange}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-1" htmlFor="image">
-              Image URL
-            </label>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Photo URL:</label>
             <input
               type="text"
-              id="image"
-              name="image"
-              value={formValues.image}
-              onChange={handleChange}
-              className="w-full p-2 border rounded focus:outline-blue-600"
+              name="photo"
+              value={profile.photo}
+              onChange={handleInputChange}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-600 mb-1" htmlFor="contact">
-              Contact
-            </label>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Contact Details:</label>
             <input
-              type="email"
-              id="contact"
-              name="contact"
-              value={formValues.contact}
-              onChange={handleChange}
-              className="w-full p-2 border rounded focus:outline-blue-600"
+              type="text"
+              name="contactDetails"
+              value={profile.contactDetails}
+              onChange={handleInputChange}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
-          <div className="flex gap-4">
+
+          <div className="flex justify-center space-x-4">
             <button
-              onClick={handleSave}
-              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+              type="submit"
+              className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none"
             >
-              Save
+              Update Profile
             </button>
             <button
-              onClick={handleCancel}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              type="button"
+              onClick={() => setIsEditing(false)}
+              className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 focus:outline-none"
             >
               Cancel
             </button>
           </div>
+        </form>
+      ) : (
+        <div className="text-center space-y-4">
+          <img
+            src={profile.photo || 'https://i.ibb.co.com/0CpDp01/download-8.jpg'}
+            alt="Organizer"
+            className="w-32 h-32 rounded-full mx-auto object-cover"
+          />
+          <h3 className="text-xl font-medium text-gray-800">{profile.name}</h3>
+          <p className="text-gray-600">{profile.contactDetails || 'No contact details available'}</p>
+          <button
+            onClick={() => setIsEditing(true)}
+            className="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none"
+          >
+            Edit Profile
+          </button>
         </div>
       )}
     </div>

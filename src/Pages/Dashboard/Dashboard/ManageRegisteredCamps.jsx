@@ -1,166 +1,156 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const ManageRegisteredCamps = () => {
-  const [registrations, setRegistrations] = useState([]);
+  const [payments, setPayments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Fetch data from the /payments route
   useEffect(() => {
-    fetch("http://localhost:5000/participants")
-      .then((res) => res.json())
-      .then((data) => setRegistrations(data))
-      .catch((err) => console.error("Error fetching registrations:", err));
+    const fetchPayments = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/payments");
+        setPayments(response.data);
+      } catch (err) {
+        setError("Failed to fetch payment data");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPayments();
   }, []);
 
-  const handleConfirm = (registrationId) => {
-    fetch(`http://localhost:5000/confirm-registration/${registrationId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.message === "Registration confirmed successfully") {
-          toast.success("Registration confirmed!");
-          setRegistrations((prev) =>
-            prev.map((reg) =>
-              reg._id === registrationId
-                ? { ...reg, confirmationStatus: "Confirmed" }
-                : reg
-            )
-          );
-        }
-      })
-      .catch((err) => toast.error("Error confirming registration: " + err));
-  };
-
-  const handleCancel = (registrationId, isPaid, isConfirmed) => {
-    if (isPaid && isConfirmed) {
-      toast.info(
-        "Cancellation not allowed for confirmed and paid registrations."
-      );
-      return;
+  // Handle confirmation
+  const handleConfirm = async (id) => {
+    try {
+      const response = await axios.patch(`http://localhost:5000/payments/${id}`, {
+        confirmationStatus: "Confirmed",
+      });
+      if (response.data.success) {
+        setPayments((prevPayments) =>
+          prevPayments.map((payment) =>
+            payment._id === id ? { ...payment, confirmationStatus: "Confirmed" } : payment
+          )
+        );
+        toast.success("Payment successfully confirmed!");
+      } else {
+        toast.error("Failed to confirm payment. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to confirm payment.");
     }
+  };
 
-    // Display confirmation toast
-    toast(
-      ({ closeToast }) => (
-        <div>
-          <p>Are you sure you want to cancel this registration?</p>
-          <div className="flex justify-between mt-2">
-            <button
-              onClick={() => {
-                cancelRegistration(registrationId);
-                closeToast(); // Close toast after action
-              }}
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded"
-            >
-              Yes
-            </button>
-            <button
-              onClick={closeToast}
-              className="bg-gray-400 hover:bg-gray-500 text-white px-4 py-1 rounded"
-            >
-              Cancel
-            </button>
-          </div>
+  // Handle cancellation with a custom toast component
+  const handleCancel = (id) => {
+    const CustomToast = () => (
+      <div>
+        <p>Are you sure you want to cancel this registration?</p>
+        <div className="flex justify-center gap-4 mt-2">
+          <button
+            className="px-4 py-1 bg-green-500 text-white rounded"
+            onClick={async () => {
+              try {
+                const response = await axios.delete(`http://localhost:5000/payments/${id}`);
+                if (response.data.success) {
+                  setPayments((prevPayments) => prevPayments.filter((payment) => payment._id !== id));
+                  toast.dismiss(); // Close the current toast
+                  toast.success("Registration canceled successfully.");
+                } else {
+                  toast.error("Failed to cancel registration.");
+                }
+              } catch (err) {
+                console.error(err);
+                toast.error("Failed to cancel registration.");
+              }
+            }}
+          >
+            Yes
+          </button>
+          <button
+            className="px-4 py-1 bg-red-500 text-white rounded"
+            onClick={() => toast.dismiss()}
+          >
+            Cancel
+          </button>
         </div>
-      ),
-      { autoClose: false } // Wait for user interaction
+      </div>
     );
+
+    toast.info(<CustomToast />, { autoClose: false, closeOnClick: false });
   };
 
-  const cancelRegistration = (registrationId) => {
-    fetch(`http://localhost:5000/cancel-registration/${registrationId}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.message === "Registration canceled successfully") {
-          toast.success("Registration canceled successfully!");
-          setRegistrations((prev) =>
-            prev.filter((reg) => reg._id !== registrationId)
-          );
-        }
-      })
-      .catch((err) => toast.error("Error canceling registration: " + err));
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <h2 className="text-3xl font-bold mb-6">Manage Registered Camps</h2>
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full bg-white shadow-md rounded-lg">
-          <thead>
-            <tr className="bg-blue-600 text-white">
-              <th className="px-4 py-2">Camp Name</th>
-              <th className="px-4 py-2">Camp Fees</th>
-              <th className="px-4 py-2">Participant Name</th>
-              <th className="px-4 py-2">Payment Status</th>
-              <th className="px-4 py-2">Confirmation Status</th>
-              <th className="px-4 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {registrations.map((reg) => (
-              <tr key={reg._id} className="border-b">
-                <td className="px-4 py-2">{reg.CampName}</td>
-                <td className="px-4 py-2">${reg.campFees}</td>
-                <td className="px-4 py-2">{reg.name}</td>
-                <td className="px-4 py-2">
-                  <span
-                    className={`px-2 py-1 rounded text-white text-sm ${
-                      reg.paymentStatus === "Paid"
-                        ? "bg-green-500"
-                        : "bg-red-500"
-                    }`}
-                  >
-                    {reg.paymentStatus}
-                  </span>
-                </td>
-                <td className="px-4 py-2">
-                  {reg.confirmationStatus === "Pending" ? (
-                    <button
-                      onClick={() => handleConfirm(reg._id)}
-                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm"
-                    >
-                      Pending
-                    </button>
-                  ) : (
-                    <span className="bg-green-500 text-white px-3 py-1 rounded text-sm">
-                      Confirmed
-                    </span>
-                  )}
-                </td>
-                <td className="px-4 py-2">
-                  <button
-                    onClick={() =>
-                      handleCancel(
-                        reg._id,
-                        reg.paymentStatus === "Paid",
-                        reg.confirmationStatus === "Confirmed"
-                      )
-                    }
-                    className={`px-3 py-1 rounded text-sm text-white ${
-                      reg.paymentStatus === "Paid" &&
-                      reg.confirmationStatus === "Confirmed"
-                        ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-red-500 hover:bg-red-600"
-                    }`}
-                    disabled={
-                      reg.paymentStatus === "Paid" &&
-                      reg.confirmationStatus === "Confirmed"
-                    }
-                  >
-                    Cancel
-                  </button>
-                </td>
+    <div className="container mx-auto px-4 py-6">
+      <h2 className="text-3xl font-bold text-gray-900 mb-6">Manage Registered Camps</h2>
+      {payments.length === 0 ? (
+        <div className="text-center text-gray-500">No registered camps available.</div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full border-collapse border border-gray-300">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="border border-gray-300 px-4 py-2">Camp Name</th>
+                <th className="border border-gray-300 px-4 py-2">Camp Fees</th>
+                <th className="border border-gray-300 px-4 py-2">Participant Name</th>
+                <th className="border border-gray-300 px-4 py-2">Payment Status</th>
+                <th className="border border-gray-300 px-4 py-2">Confirmation Status</th>
+                <th className="border border-gray-300 px-4 py-2">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {payments.map((payment) => (
+                <tr key={payment._id}>
+                  <td className="border border-gray-300 px-4 py-2">{payment.CampName}</td>
+                  <td className="border border-gray-300 px-4 py-2">${payment.amount}</td>
+                  <td className="border border-gray-300 px-4 py-2">{payment.userEmail}</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {payment.status === "succeeded" ? (
+                      <span className="text-green-600 font-bold">Paid</span>
+                    ) : (
+                      <span className="text-red-600 font-bold">Unpaid</span>
+                    )}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    {payment.confirmationStatus === "Confirmed" ? (
+                      <span className="text-green-600 font-bold">Confirmed</span>
+                    ) : (
+                      <button
+                        className="px-3 py-1 bg-blue-500 text-white rounded"
+                        onClick={() => handleConfirm(payment._id)}
+                      >
+                        Pending
+                      </button>
+                    )}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    <button
+                      className="px-3 py-1 bg-red-500 text-white rounded"
+                      onClick={() => handleCancel(payment._id)}
+                      disabled={payment.status === "succeeded" && payment.confirmationStatus === "Confirmed"}
+                    >
+                      Cancel
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
