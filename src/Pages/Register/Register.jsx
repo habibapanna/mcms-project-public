@@ -23,7 +23,7 @@ const Register = () => {
                 console.log("User registered:", result.user);
     
                 const newUser = { name, email, photo };
-                fetch("http://localhost:5000/users", {
+                fetch("https://mcms-project-server.vercel.app/users", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const Register = () => {
                 };
     
                 // Save the user to the database
-                fetch("http://localhost:5000/users", {
+                fetch("https://mcms-project-server.vercel.app/users", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(userInfo),

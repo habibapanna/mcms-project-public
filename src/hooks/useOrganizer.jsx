@@ -11,7 +11,7 @@ const useOrganizer = () => {
     useEffect(() => {
         if (user?.email) {
             axios
-                .get(`http://localhost:5000/users/organizer/${user.email}`)
+                .get(`https://mcms-project-server.vercel.app/users/organizer/${user.email}`)
                 .then((response) => {
                     setIsOrganizer(response.data.organizer);
                 })

@@ -10,7 +10,7 @@ const useParticipant = () => {
     useEffect(() => {
         if (user?.email) {
             axios
-                .get(`http://localhost:5000/participants/${user.email}`)
+                .get(`https://mcms-project-server.vercel.app/participants/${user.email}`)
                 .then((response) => {
                     setParticipant(response.data);
                 })
@@ -25,7 +25,7 @@ const useParticipant = () => {
 
     const updateParticipant = (updatedData) => {
         return axios
-            .put(`http://localhost:5000/participants/${user.email}`, updatedData)
+            .put(`https://mcms-project-server.vercel.app/participants/${user.email}`, updatedData)
             .then((response) => response.data)
             .catch((error) => {
                 console.error('Error updating participant:', error);

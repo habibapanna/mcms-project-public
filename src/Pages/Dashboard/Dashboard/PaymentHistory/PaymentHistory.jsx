@@ -8,7 +8,7 @@ const PaymentHistory = () => {
   useEffect(() => {
     const fetchPaymentHistory = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/payments'); // Get all payments
+        const response = await axios.get('https://mcms-project-server.vercel.app/payments'); // Get all payments
         console.log('Payment history response:', response.data);  // Log the response data
         setPayments(response.data);
       } catch (error) {

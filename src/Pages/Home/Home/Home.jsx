@@ -10,7 +10,7 @@ const Home = () => {
   useEffect(() => {
     const fetchFeedback = async () => {
       try {
-        const response = await fetch("http://localhost:5000/feedback"); // Replace with your actual API URL
+        const response = await fetch("https://mcms-project-server.vercel.app/feedback"); // Replace with your actual API URL
         const data = await response.json();
         setFeedbacks(data);
       } catch (error) {

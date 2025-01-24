@@ -22,7 +22,7 @@ const RegisteredCamps = () => {
   // Fetch registered camps
   const fetchCamps = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/participants/${user.email}`);
+      const response = await axios.get(`https://mcms-project-server.vercel.app/api/participants/${user.email}`);
       setCamps(response.data);
     } catch (error) {
       console.error("Error fetching camps:", error);
@@ -34,7 +34,7 @@ const RegisteredCamps = () => {
   // Cancel camp registration
   const handleCancel = async (campId) => {
     try {
-      await axios.delete(`http://localhost:5000/cancel-registration/${campId}`);
+      await axios.delete(`https://mcms-project-server.vercel.app/cancel-registration/${campId}`);
       toast.success("Registration canceled!");
       fetchCamps(); // Refresh the camps list
     } catch (error) {
@@ -71,7 +71,7 @@ const RegisteredCamps = () => {
       });
   
       // Make the POST request
-      const response = await axios.post("http://localhost:5000/feedback", {
+      const response = await axios.post("https://mcms-project-server.vercel.app/feedback", {
         campId,         // Camp ID from the selected camp
         feedbackText,   // Feedback entered in the modal
         rating,         // Rating entered in the modal
@@ -222,7 +222,7 @@ const PaymentForm = ({ camp, onSuccess }) => {
   const handlePay = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/create-payment-intent", {
+      const response = await fetch("https://mcms-project-server.vercel.app/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ price: camp.campFees }),
@@ -261,7 +261,7 @@ const PaymentForm = ({ camp, onSuccess }) => {
           status: paymentIntent.status, // 'succeeded' or other status
         };
         try {
-          const paymentResponse = await axios.post("http://localhost:5000/payments", paymentData);
+          const paymentResponse = await axios.post("https://mcms-project-server.vercel.app/payments", paymentData);
           console.log("Payment saved to the database:", paymentResponse.data);
           onSuccess(paymentIntent.id); // Call onSuccess with the transaction ID
         } catch (error) {

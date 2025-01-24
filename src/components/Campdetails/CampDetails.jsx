@@ -21,7 +21,7 @@ const CampDetails = () => {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/camps/${id}`)
+    fetch(`https://mcms-project-server.vercel.app/camps/${id}`)
         .then((response) => response.json())
         .then((data) => {
             setCamp(data);
@@ -47,7 +47,7 @@ const CampDetails = () => {
     const participantWithCampId = { ...participant, campId: id };
 
     // Save participant registration info to database
-    fetch("http://localhost:5000/participants", { 
+    fetch("https://mcms-project-server.vercel.app/participants", { 
       method: "POST",
       headers: {
         "Content-Type": "application/json",

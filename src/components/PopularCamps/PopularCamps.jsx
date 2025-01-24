@@ -6,7 +6,7 @@ const PopularCamps = () => {
 
   useEffect(() => {
     // Fetch the popular camps (sorted by highest participant count)
-    fetch("http://localhost:5000/popular-camps")
+    fetch("https://mcms-project-server.vercel.app/popular-camps")
       .then((response) => response.json())
       .then((data) => setPopularCamps(data.slice(0, 6))) // Limiting to 6 camps
       .catch((error) => console.error("Error fetching camps:", error));

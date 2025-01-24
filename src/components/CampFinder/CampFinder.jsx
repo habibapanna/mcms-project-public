@@ -9,7 +9,7 @@ const CampFinder = () => {
 
   useEffect(() => {
     // Fetch all camps from the backend
-    fetch('http://localhost:5000/camps')
+    fetch('https://mcms-project-server.vercel.app/camps')
       .then((res) => res.json())
       .then((data) => {
         setCamps(data);

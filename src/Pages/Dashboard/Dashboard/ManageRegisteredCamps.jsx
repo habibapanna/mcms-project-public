@@ -11,7 +11,7 @@ const ManageRegisteredCamps = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/payments");
+        const response = await axios.get("https://mcms-project-server.vercel.app/payments");
         setPayments(response.data);
       } catch (err) {
         setError("Failed to fetch payment data");
@@ -27,7 +27,7 @@ const ManageRegisteredCamps = () => {
   // Handle confirmation
   const handleConfirm = async (id) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/payments/${id}`, {
+      const response = await axios.patch(`https://mcms-project-server.vercel.app/payments/${id}`, {
         confirmationStatus: "Confirmed",
       });
       if (response.data.success) {
@@ -56,7 +56,7 @@ const ManageRegisteredCamps = () => {
             className="px-4 py-1 bg-green-500 text-white rounded"
             onClick={async () => {
               try {
-                const response = await axios.delete(`http://localhost:5000/payments/${id}`);
+                const response = await axios.delete(`https://mcms-project-server.vercel.app/payments/${id}`);
                 if (response.data.success) {
                   setPayments((prevPayments) => prevPayments.filter((payment) => payment._id !== id));
                   toast.dismiss(); // Close the current toast

@@ -10,7 +10,7 @@ const ManageCamps = () => {
 
   // Fetch all camps
   useEffect(() => {
-    fetch("http://localhost:5000/camps")
+    fetch("https://mcms-project-server.vercel.app/camps")
       .then((res) => res.json())
       .then((data) => setCamps(data))
       .catch((err) => console.error("Error fetching camps:", err));
@@ -47,7 +47,7 @@ const ManageCamps = () => {
 
   // Handle delete
   const handleDelete = (campId) => {
-    fetch(`http://localhost:5000/camps/${campId}`, { method: "DELETE" })
+    fetch(`https://mcms-project-server.vercel.app/camps/${campId}`, { method: "DELETE" })
       .then((res) => res.json())
       .then((data) => {
         if (data.deletedCount > 0) {
@@ -77,7 +77,7 @@ const ManageCamps = () => {
 
   // Handle update
   const handleUpdate = (id) => {
-    fetch(`http://localhost:5000/camps/${id}`, {
+    fetch(`https://mcms-project-server.vercel.app/camps/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

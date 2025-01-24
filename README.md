@@ -7,7 +7,7 @@ A comprehensive platform to manage camps, participants, and organizers seamlessl
 - **Website Name:** Management Camp Management System (MCMS)
 - **Organizer Username:** `organizer_admin`
 - **Organizer Password:** `organizer123`
-- **Live Site URL:** [https://example-mcms.com](https://example-mcms.com)
+- **Live Site URL:** [https://mcsc-project.web.app](https://mcsc-project.web.app)
 
 ## Key Features
 

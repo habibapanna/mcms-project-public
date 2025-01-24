@@ -26,7 +26,7 @@ const Login = () => {
             };
 
             // Store user in the database
-            fetch("http://localhost:5000/users", {
+            fetch("https://mcms-project-server.vercel.app/users", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -71,7 +71,7 @@ const handleGoogleLogin = () => {
           };
 
           // Save the user to the database
-          fetch("http://localhost:5000/users", {
+          fetch("https://mcms-project-server.vercel.app/users", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(userInfo),

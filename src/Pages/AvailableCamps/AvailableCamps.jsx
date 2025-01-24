@@ -8,7 +8,7 @@ const AvailableCamps = () => {
   const [sortCriteria, setSortCriteria] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5000/available-camps")
+    fetch("https://mcms-project-server.vercel.app/available-camps")
       .then((response) => response.json())
       .then((data) => setCamps(data))
       .catch((error) => console.error("Error fetching camps:", error));

@@ -15,7 +15,7 @@ const AddCamp = () => {
     data.participantCount = 0;
 
     // Save data to the database
-    fetch("http://localhost:5000/add-camp", {
+    fetch("https://mcms-project-server.vercel.app/add-camp", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

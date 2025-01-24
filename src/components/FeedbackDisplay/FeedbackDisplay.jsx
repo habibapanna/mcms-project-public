@@ -5,7 +5,7 @@ const FeedbackDisplay = ({ campId }) => {
   const [feedbacks, setFeedbacks] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/get-feedback/${campId}`)
+    fetch(`https://mcms-project-server.vercel.app/get-feedback/${campId}`)
       .then((response) => response.json())
       .then((data) => setFeedbacks(data))
       .catch((error) => console.error('Error fetching feedback:', error));

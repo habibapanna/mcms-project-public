@@ -10,7 +10,7 @@ const Analytics = () => {
   useEffect(() => {
     const fetchParticipants = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/participants');
+        const response = await axios.get('https://mcms-project-server.vercel.app/participants');
         console.log(response.data); // Log to inspect the data structure
         setParticipants(response.data);
       } catch (error) {
