@@ -3,40 +3,47 @@ import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
 
 const AvailableCamps = () => {
-  const [camps, setCamps] = useState([]);
+  const [originalCamps, setOriginalCamps] = useState([]); // Original fetched data
+  const [displayedCamps, setDisplayedCamps] = useState([]); // Filtered data
   const [searchTerm, setSearchTerm] = useState("");
   const [sortCriteria, setSortCriteria] = useState("");
+  const [isTwoColumn, setIsTwoColumn] = useState(false);
 
+  // Fetch camps data on component mount
   useEffect(() => {
     fetch("https://mcms-project-server.vercel.app/available-camps")
       .then((response) => response.json())
-      .then((data) => setCamps(data))
+      .then((data) => {
+        setOriginalCamps(data);
+        setDisplayedCamps(data); // Set both original and displayed camps initially
+      })
       .catch((error) => console.error("Error fetching camps:", error));
   }, []);
 
-  const handleSearch = (e) => setSearchTerm(e.target.value);
+  // Update displayed camps when search term or sort criteria changes
+  useEffect(() => {
+    let filtered = [...originalCamps];
 
-  const handleSort = (criteria) => {
-    setSortCriteria(criteria);
-    let sortedCamps = [...camps];
-
-    if (criteria === "Most Registered") {
-      sortedCamps.sort((a, b) => b.participantCount - a.participantCount);
-    } else if (criteria === "Camp Fees") {
-      sortedCamps.sort((a, b) => a.campFees - b.campFees);
-    } else if (criteria === "Alphabetical Order") {
-      sortedCamps.sort((a, b) => a.campName.localeCompare(b.campName));
+    // Filter based on search term
+    if (searchTerm) {
+      filtered = filtered.filter((camp) =>
+        camp.campName.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
 
-    setCamps(sortedCamps);
-  };
+    // Sort based on selected criteria
+    if (sortCriteria) {
+      if (sortCriteria === "Most Registered") {
+        filtered.sort((a, b) => b.participantCount - a.participantCount);
+      } else if (sortCriteria === "Camp Fees") {
+        filtered.sort((a, b) => a.campFees - b.campFees);
+      } else if (sortCriteria === "Alphabetical Order") {
+        filtered.sort((a, b) => a.campName.localeCompare(b.campName));
+      }
+    }
 
-  const filteredCamps = camps.filter(
-    (camp) =>
-      camp.campName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      camp.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      camp.dateTime.includes(searchTerm)
-  );
+    setDisplayedCamps(filtered);
+  }, [searchTerm, sortCriteria, originalCamps]);
 
   const cardAnimation = useSpring({
     opacity: 1,
@@ -47,16 +54,17 @@ const AvailableCamps = () => {
 
   return (
     <div className="p-5 md:p-10">
+      {/* Search and Sort Controls */}
       <div className="flex flex-col md:flex-row gap-4 mb-8">
         <input
           type="text"
-          placeholder="Search camps..."
+          placeholder="Search camps by name..."
           value={searchTerm}
-          onChange={handleSearch}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="p-3 border border-gray-300 rounded-lg flex-1"
         />
         <select
-          onChange={(e) => handleSort(e.target.value)}
+          onChange={(e) => setSortCriteria(e.target.value)}
           className="p-3 border border-gray-300 rounded-lg"
         >
           <option value="">Sort by</option>
@@ -64,12 +72,23 @@ const AvailableCamps = () => {
           <option value="Camp Fees">Camp Fees</option>
           <option value="Alphabetical Order">Alphabetical Order</option>
         </select>
+        <button
+          onClick={() => setIsTwoColumn(!isTwoColumn)}
+          className="p-3 bg-teal-500 text-white rounded-lg hover:bg-teal-600"
+        >
+          {isTwoColumn ? "Switch to Three Columns" : "Switch to Two Columns"}
+        </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCamps.map((camp) => (
+      {/* Camps Cards */}
+      <div
+        className={`grid ${
+          isTwoColumn ? "grid-cols-2" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+        } gap-6`}
+      >
+        {displayedCamps.map((camp) => (
           <animated.div
-            key={camp.campName}
+            key={camp._id}
             style={cardAnimation}
             className="border shadow-xl rounded-lg overflow-hidden flex flex-col"
           >
@@ -88,7 +107,8 @@ const AvailableCamps = () => {
                   <strong>Location:</strong> {camp.location}
                 </p>
                 <p className="text-sm">
-                  <strong>Healthcare Professional:</strong> {camp.healthcareProfessional}
+                  <strong>Healthcare Professional:</strong>{" "}
+                  {camp.healthcareProfessional}
                 </p>
                 <p className="text-sm">
                   <strong>Participants:</strong> {camp.participantCount}
@@ -105,6 +125,13 @@ const AvailableCamps = () => {
           </animated.div>
         ))}
       </div>
+
+      {/* Message when no camps match search */}
+      {displayedCamps.length === 0 && (
+        <div className="text-center text-gray-600 mt-10">
+          No camps match your search.
+        </div>
+      )}
     </div>
   );
 };
