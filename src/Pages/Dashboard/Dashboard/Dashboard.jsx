@@ -26,7 +26,7 @@ const [isOrganizer] = useOrganizer();
     <div className="flex flex-col min-h-screen max-w-6xl mx-auto">
       {/* Sidebar Navigation */}
       <div
-        className={`fixed inset-y-0 left-0 bg-blue-600 text-white p-4 w-64 z-50 transform ${
+        className={`fixed inset-y-0 left-0 bg-teal-600 text-white p-4 w-64 z-50 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } sm:translate-x-0 transition-transform duration-300 ease-in-out`}
       >
@@ -50,7 +50,7 @@ const [isOrganizer] = useOrganizer();
                   className={({ isActive }) =>
                     isActive
                       ? "bg-white rounded px-4 py-2 text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2"
+                      : "hover:bg-teal-700 rounded px-4 py-2"
                   }
                 >
                   Organizer Profile
@@ -63,7 +63,7 @@ const [isOrganizer] = useOrganizer();
                   className={({ isActive }) =>
                     isActive
                       ? "bg-white rounded px-4 py-2 text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2"
+                      : "hover:bg-teal-700 rounded px-4 py-2"
                   }
                 >
                   Add A Camp
@@ -76,7 +76,7 @@ const [isOrganizer] = useOrganizer();
                   className={({ isActive }) =>
                     isActive
                       ? "bg-white rounded px-4 py-2 text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2"
+                      : "hover:bg-teal-700 rounded px-4 py-2"
                   }
                 >
                   Manage Camps
@@ -89,7 +89,7 @@ const [isOrganizer] = useOrganizer();
                   className={({ isActive }) =>
                     isActive
                       ? "bg-white rounded px-4 py-2 text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2"
+                      : "hover:bg-teal-700 rounded px-4 py-2"
                   }
                 >
                   Manage Registered Camps
@@ -102,7 +102,7 @@ const [isOrganizer] = useOrganizer();
                   className={({ isActive }) =>
                     isActive
                       ? "bg-white rounded px-4 py-2 text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2"
+                      : "hover:bg-teal-700 rounded px-4 py-2"
                   }
                 >
                   All-User
@@ -118,7 +118,7 @@ const [isOrganizer] = useOrganizer();
                   className={({ isActive }) =>
                     isActive
                       ? "bg-white rounded px-4 py-2 text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2"
+                      : "hover:bg-teal-700 rounded px-4 py-2"
                   }
                 >
                   Analytics
@@ -131,7 +131,7 @@ const [isOrganizer] = useOrganizer();
                   className={({ isActive }) =>
                     isActive
                       ? "bg-white rounded px-4 py-2 text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2"
+                      : "hover:bg-teal-700 rounded px-4 py-2"
                   }
                 >
                   Participant Profile
@@ -144,7 +144,7 @@ const [isOrganizer] = useOrganizer();
                   className={({ isActive }) =>
                     isActive
                       ? "bg-white rounded px-4 py-2 text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2"
+                      : "hover:bg-teal-700 rounded px-4 py-2"
                   }
                 >
                   Registered Camps
@@ -157,7 +157,7 @@ const [isOrganizer] = useOrganizer();
                   className={({ isActive }) =>
                     isActive
                       ? "bg-white rounded px-4 py-2 text-black"
-                      : "hover:bg-blue-700 rounded px-4 py-2"
+                      : "hover:bg-teal-700 rounded px-4 py-2"
                   }
                 >
                   Payment History
@@ -167,7 +167,7 @@ const [isOrganizer] = useOrganizer();
           )}
         </ul>
 
-        <hr className="border-t border-blue-500 my-6" />
+        <hr className="border-t border-white my-6" />
 
         {/* Shared Routes */}
         <ul className="space-y-6">
@@ -177,8 +177,8 @@ const [isOrganizer] = useOrganizer();
               to="/"
               className={({ isActive }) =>
                 isActive
-                  ? "bg-blue-800 rounded px-4 py-2 text-white"
-                  : "hover:bg-blue-700 rounded px-4 py-2"
+                  ? "bg-teal-800 rounded px-4 py-2 text-white"
+                  : "hover:bg-teal-700 rounded px-4 py-2"
               }
             >
               Home
@@ -190,8 +190,8 @@ const [isOrganizer] = useOrganizer();
               to="/available-camps"
               className={({ isActive }) =>
                 isActive
-                  ? "bg-blue-800 rounded px-4 py-2 text-white"
-                  : "hover:bg-blue-700 rounded px-4 py-2"
+                  ? "bg-teal-800 rounded px-4 py-2 text-white"
+                  : "hover:bg-teal-700 rounded px-4 py-2"
               }
             >
               Available Camps
@@ -203,8 +203,8 @@ const [isOrganizer] = useOrganizer();
               to="/contact"
               className={({ isActive }) =>
                 isActive
-                  ? "bg-blue-800 rounded px-4 py-2 text-white"
-                  : "hover:bg-blue-700 rounded px-4 py-2"
+                  ? "bg-teal-800 rounded px-4 py-2 text-white"
+                  : "hover:bg-teal-700 rounded px-4 py-2"
               }
             >
               Contact
@@ -220,7 +220,7 @@ const [isOrganizer] = useOrganizer();
             {isOrganizer ? "Organizer Dashboard" : "Participant Dashboard"}
           </h1>
           <button
-            className="text-2xl text-blue-600 focus:outline-none"
+            className="text-2xl text-teal-600 focus:outline-none"
             onClick={toggleSidebar}
           >
             <FaBars />

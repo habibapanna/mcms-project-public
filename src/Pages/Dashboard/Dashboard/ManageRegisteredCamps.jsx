@@ -53,7 +53,7 @@ const ManageRegisteredCamps = () => {
         <p>Are you sure you want to cancel this registration?</p>
         <div className="flex justify-center gap-4 mt-2">
           <button
-            className="px-4 py-1 bg-green-500 text-white rounded"
+            className="px-4 py-1 bg-teal-500 text-white rounded"
             onClick={async () => {
               try {
                 const response = await axios.delete(`https://mcms-project-server.vercel.app/payments/${id}`);
@@ -129,7 +129,7 @@ const ManageRegisteredCamps = () => {
                       <span className="text-green-600 font-bold">Confirmed</span>
                     ) : (
                       <button
-                        className="px-3 py-1 bg-blue-500 text-white rounded"
+                        className="px-3 py-1 bg-teal-500 text-white rounded"
                         onClick={() => handleConfirm(payment._id)}
                       >
                         Pending

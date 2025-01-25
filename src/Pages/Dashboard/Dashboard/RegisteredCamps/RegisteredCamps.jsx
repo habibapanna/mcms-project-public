@@ -5,8 +5,6 @@ import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-
-
 // Initialize stripePromise with your Stripe publishable key
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -54,45 +52,44 @@ const RegisteredCamps = () => {
     );
   };
 
-  // Submit feedback
-  const handleSubmitFeedback = async (campId) => {
-    if (!campId) {
-      console.error("No camp selected for feedback");
-      toast.error("No camp selected for feedback");
-      return;
+ // Submit feedback
+ const handleSubmitFeedback = async (campId) => {
+  if (!campId) {
+    console.error("No camp selected for feedback");
+    toast.error("No camp selected for feedback");
+    return;
+  }
+
+  try {
+    // Log the payload before sending
+    console.log("Submitting feedback with data:", {
+      campId,
+      feedbackText,
+      rating,
+    });
+
+    // Make the POST request
+    const response = await axios.post("https://mcms-project-server.vercel.app/feedback", {
+      campId,         // Camp ID from the selected camp
+      feedbackText,   // Feedback entered in the modal
+      rating,         // Rating entered in the modal
+    });
+
+    if (response.data.message) {
+      toast.success(response.data.message); // Success message from the backend
     }
-  
-    try {
-      // Log the payload before sending
-      console.log("Submitting feedback with data:", {
-        campId,
-        feedbackText,
-        rating,
-      });
-  
-      // Make the POST request
-      const response = await axios.post("https://mcms-project-server.vercel.app/feedback", {
-        campId,         // Camp ID from the selected camp
-        feedbackText,   // Feedback entered in the modal
-        rating,         // Rating entered in the modal
-      });
-  
-      if (response.data.message) {
-        toast.success(response.data.message); // Success message from the backend
-      }
-  
-      // Reset form
-      setFeedbackText("");
-      setRating(5);
-      setIsFeedbackModalOpen(false);
-    } catch (error) {
-      console.error("Error submitting feedback:", error.response || error);
-      toast.error(error.response?.data?.message || "Failed to submit feedback.");
-    }
-  };
-  
-  
-  
+
+    // Reset form
+    setFeedbackText("");
+    setRating(5);
+    setIsFeedbackModalOpen(false);
+  } catch (error) {
+    console.error("Error submitting feedback:", error.response || error);
+    toast.error(error.response?.data?.message || "Failed to submit feedback.");
+  }
+};
+
+
   useEffect(() => {
     fetchCamps();
   }, [user]);
@@ -133,7 +130,7 @@ const RegisteredCamps = () => {
                   <td className="border px-4 py-2 text-left">
                     {camp.paymentStatus !== "Paid" && (
                       <button
-                        className="bg-green-500 text-white px-4 py-2 rounded"
+                        className="bg-teal-500 text-white px-4 py-2 rounded"
                         onClick={() => setSelectedCamp(camp)}
                       >
                         Pay
@@ -141,7 +138,7 @@ const RegisteredCamps = () => {
                     )}
                     {camp.paymentStatus === "Paid" && (
                       <>
-                        <button className="bg-blue-500 text-white px-4 py-2 rounded" disabled>
+                        <button className="bg-gray-500 text-white px-4 py-2 rounded" disabled>
                           Paid
                         </button>
                         <button
@@ -197,7 +194,7 @@ const RegisteredCamps = () => {
       </div>
       <button
         onClick={() => handleSubmitFeedback(selectedCamp._id)} // Pass camp ID to the function
-        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+        className="mt-2 bg-teal-500 text-white px-4 py-2 rounded"
       >
         Submit Feedback
       </button>
@@ -281,7 +278,7 @@ const PaymentForm = ({ camp, onSuccess }) => {
       <CardElement className="mb-4 p-2 border rounded" />
       <button
         type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded"
+        className="bg-teal-500 text-white px-4 py-2 rounded"
         disabled={!stripe || !elements}
       >
         Confirm Payment

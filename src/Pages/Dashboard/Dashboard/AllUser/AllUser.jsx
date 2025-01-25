@@ -102,7 +102,7 @@ const AllUser = () => {
                 ) : (
                   <button
                     onClick={() => handleMakeOrganizer(user)}
-                    className="rounded-lg p-1 mx-auto btn btn-sm bg-blue-500"
+                    className="rounded-lg p-1 mx-auto btn btn-sm bg-teal-500"
                   >
                     <FaUsers className="text-white text-2xl" />
                   </button>

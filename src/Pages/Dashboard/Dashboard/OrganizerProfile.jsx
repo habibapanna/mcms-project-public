@@ -64,7 +64,7 @@ const OrganizerProfile = () => {
               name="name"
               value={profile.name}
               onChange={handleInputChange}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
           </div>
 
@@ -75,7 +75,7 @@ const OrganizerProfile = () => {
               name="photo"
               value={profile.photo}
               onChange={handleInputChange}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
           </div>
 
@@ -86,14 +86,14 @@ const OrganizerProfile = () => {
               name="contactDetails"
               value={profile.contactDetails}
               onChange={handleInputChange}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
           </div>
 
           <div className="flex justify-center space-x-4">
             <button
               type="submit"
-              className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none"
+              className="px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 focus:outline-none"
             >
               Update Profile
             </button>
@@ -117,7 +117,7 @@ const OrganizerProfile = () => {
           <p className="text-gray-600">{profile.contactDetails || 'No contact details available'}</p>
           <button
             onClick={() => setIsEditing(true)}
-            className="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none"
+            className="mt-4 px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 focus:outline-none"
           >
             Edit Profile
           </button>

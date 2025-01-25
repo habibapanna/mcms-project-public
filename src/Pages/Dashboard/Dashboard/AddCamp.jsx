@@ -36,7 +36,7 @@ const AddCamp = () => {
   return (
     <div className="bg-white shadow-md rounded-lg p-6 max-w-2xl mx-auto border border-gray-200 mt-10">
       <ToastContainer />
-      <h1 className="text-center font-bold pb-5">Add a Camp</h1>
+      <h1 className="text-center font-bold pb-5 text-teal-600">Add a Camp</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Camp Name */}
         <div className="mb-4">
@@ -44,7 +44,7 @@ const AddCamp = () => {
           <input
             type="text"
             {...register("campName", { required: "Camp name is required" })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
             placeholder="Enter the camp name"
           />
           {errors.campName && (
@@ -58,7 +58,7 @@ const AddCamp = () => {
           <input
             type="url"
             {...register("image", { required: "Image URL is required" })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
             placeholder="Enter the image URL"
           />
           {errors.image && (
@@ -75,7 +75,7 @@ const AddCamp = () => {
               required: "Camp fees are required",
               min: { value: 0, message: "Fees must be a positive number" },
             })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
             placeholder="Enter the camp fees"
           />
           {errors.campFees && (
@@ -89,7 +89,7 @@ const AddCamp = () => {
           <input
             type="datetime-local"
             {...register("dateTime", { required: "Date and time are required" })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
           />
           {errors.dateTime && (
             <p className="text-red-600 text-sm">{errors.dateTime.message}</p>
@@ -102,7 +102,7 @@ const AddCamp = () => {
           <input
             type="text"
             {...register("location", { required: "Location is required" })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
             placeholder="Enter the camp location"
           />
           {errors.location && (
@@ -118,7 +118,7 @@ const AddCamp = () => {
             {...register("healthcareProfessional", {
               required: "Healthcare professional's name is required",
             })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
             placeholder="Enter the professional's name"
           />
           {errors.healthcareProfessional && (
@@ -131,7 +131,7 @@ const AddCamp = () => {
           <label className="block text-gray-700 font-medium mb-2">Description:</label>
           <textarea
             {...register("description", { required: "Description is required" })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
             rows="4"
             placeholder="Write a brief description of the camp"
           />
@@ -142,7 +142,7 @@ const AddCamp = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
+          className="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300"
         >
           Add Camp
         </button>

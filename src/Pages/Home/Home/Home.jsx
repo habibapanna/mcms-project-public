@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import BannerSection from './BannerSection/BannerSection';
 import PopularCamps from '../../../components/PopularCamps/PopularCamps';
 import CampFinder from '../../../components/CampFinder/CampFinder';
+import { AwesomeButton } from "react-awesome-button";
+import { motion } from "framer-motion";
+import "react-awesome-button/dist/styles.css";
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -26,6 +30,12 @@ const Home = () => {
   if (loading) {
     return <div className="flex justify-center items-center h-screen">Loading feedback...</div>;
   }
+
+     // Animation Variants
+     const animationVariants = {
+      hidden: { opacity: 0, y: 50 },
+      visible: { opacity: 1, y: 0 },
+    };
 
   return (
     <div>
@@ -57,6 +67,33 @@ const Home = () => {
           </div>
         )}
       </div>
+
+{/* Animated Section */}
+<motion.div
+        className="mt-16 mb-10 p-10 bg-teal-500 text-white rounded-lg shadow-lg text-center"
+        initial="hidden"
+        whileInView="visible"
+        variants={animationVariants}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <h2 className="text-3xl font-bold mb-4">
+          Empowering Health Awareness, One Camp at a Time!
+        </h2>
+        <p className="mb-6 text-lg">
+          Join hands with us to create a healthier community. Explore our
+          exclusive camps and take a step towards making a difference.
+        </p>
+        <AwesomeButton
+          type="primary"
+          action={() => window.scrollTo(0, 0)}
+          size="large"
+        >
+          <Link to="/available-camps">Discover More</Link>
+          
+        </AwesomeButton>
+      </motion.div>
+
     </div>
   );
 };

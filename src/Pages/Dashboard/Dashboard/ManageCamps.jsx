@@ -111,7 +111,7 @@ const ManageCamps = () => {
       <div className="overflow-x-auto">
         <table className="table-auto w-full bg-white shadow-md rounded-lg">
           <thead>
-            <tr className="bg-blue-600 text-white">
+            <tr className="bg-teal-600 text-white">
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Date & Time</th>
               <th className="px-4 py-2">Location</th>
@@ -129,7 +129,7 @@ const ManageCamps = () => {
                 <td className="px-4 py-2 flex space-x-2">
                   <button
                     onClick={() => handleEditClick(camp)}
-                    className="text-blue-500 hover:text-blue-700"
+                    className="text-teal-500 hover:text-teal-700"
                   >
                     <FaEdit size={15} />
                   </button>
@@ -194,7 +194,7 @@ const ManageCamps = () => {
             <div className="flex space-x-2">
               <button
                 onClick={() => handleUpdate(editingCamp._id)}
-                className="bg-green-500 text-white px-4 py-2 rounded"
+                className="bg-teal-500 text-white px-4 py-2 rounded"
               >
                 Update
               </button>
