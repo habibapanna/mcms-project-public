@@ -53,8 +53,9 @@ const RegisteredCamps = () => {
   };
 
  // Submit feedback
- const handleSubmitFeedback = async (campId) => {
-  if (!campId) {
+// Submit feedback
+const handleSubmitFeedback = async (campId) => {
+  if (!campId || !selectedCamp) {
     console.error("No camp selected for feedback");
     toast.error("No camp selected for feedback");
     return;
@@ -64,6 +65,7 @@ const RegisteredCamps = () => {
     // Log the payload before sending
     console.log("Submitting feedback with data:", {
       campId,
+      campName: selectedCamp.CampName, // Include CampName
       feedbackText,
       rating,
     });
@@ -71,6 +73,7 @@ const RegisteredCamps = () => {
     // Make the POST request
     const response = await axios.post("https://mcms-project-server.vercel.app/feedback", {
       campId,         // Camp ID from the selected camp
+      campName: selectedCamp.CampName, // Camp Name from the selected camp
       feedbackText,   // Feedback entered in the modal
       rating,         // Rating entered in the modal
     });

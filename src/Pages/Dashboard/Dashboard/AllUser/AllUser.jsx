@@ -76,51 +76,53 @@ const AllUser = () => {
   };
 
   return (
-    <div>
+    <div className="p-4">
       <ToastContainer />
-      <h1 className="text-2xl font-bold mb-4">All Users</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center sm:text-left">All Users</h1>
       {error && <p className="text-red-500">Error: {error.message}</p>}
       {isLoading && <p>Loading...</p>}
       {!isLoading && users.length === 0 && <p>No users found.</p>}
-      <table className="min-w-full border-collapse border border-gray-300">
-        <thead>
-          <tr>
-            <th className="border border-gray-300 px-4 py-2">Name</th>
-            <th className="border border-gray-300 px-4 py-2">Email</th>
-            <th className="border border-gray-300 px-4 py-2">Role</th>
-            <th className="border border-gray-300 px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user._id}>
-              <td className="border border-gray-300 px-4 py-2">{user.name || 'N/A'}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.email}</td>
-              <td className="border border-gray-300 px-4 py-2 flex items-center gap-2">
-                {user.role === 'organizer' ? (
-                  'Organizer'
-                ) : (
-                  <button
-                    onClick={() => handleMakeOrganizer(user)}
-                    className="rounded-lg p-1 mx-auto btn btn-sm bg-teal-500"
-                  >
-                    <FaUsers className="text-white text-2xl" />
-                  </button>
-                )}
-              </td>
-              <td className="border border-gray-300 px-4 py-2 text-center">
-                <button
-                  onClick={() => handleDelete(user._id)}
-                  className="text-red-500 hover:text-red-700"
-                  title="Delete User"
-                >
-                  <FaTrash />
-                </button>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-collapse border border-gray-300">
+          <thead>
+            <tr className="bg-gray-200 text-sm sm:text-base">
+              <th className="border border-gray-300 px-2 py-3 sm:px-4">Name</th>
+              <th className="border border-gray-300 px-2 py-3 sm:px-4">Email</th>
+              <th className="border border-gray-300 px-2 py-3 sm:px-4">Role</th>
+              <th className="border border-gray-300 px-2 py-3 sm:px-4">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user._id} className="text-sm sm:text-base">
+                <td className="border border-gray-300 px-2 py-2 sm:px-4">{user.name || 'N/A'}</td>
+                <td className="border border-gray-300 px-2 py-2 sm:px-4">{user.email}</td>
+                <td className="border border-gray-300 px-2 py-2 sm:px-4 flex items-center gap-2 justify-center">
+                  {user.role === 'organizer' ? (
+                    'Organizer'
+                  ) : (
+                    <button
+                      onClick={() => handleMakeOrganizer(user)}
+                      className="rounded-lg p-1 btn btn-sm bg-teal-500 hover:bg-teal-600"
+                    >
+                      <FaUsers className="text-white text-xl" />
+                    </button>
+                  )}
+                </td>
+                <td className="border border-gray-300 px-2 py-2 sm:px-4 text-center">
+                  <button
+                    onClick={() => handleDelete(user._id)}
+                    className="text-red-500 hover:text-red-700"
+                    title="Delete User"
+                  >
+                    <FaTrash />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
