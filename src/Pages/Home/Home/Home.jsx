@@ -56,9 +56,6 @@ const Home = () => {
                 <p className="text-sm text-gray-500 mb-2">
                   <strong>Camp ID:</strong> {feedback.campId}
                 </p>
-                <p className="text-sm text-gray-500 mb-2">
-                  <strong>Camp ID:</strong> {feedback.CampName}
-                </p>
                 <p className="text-lg font-semibold text-gray-800 mb-2">
                   {feedback.feedbackText}
                 </p>
