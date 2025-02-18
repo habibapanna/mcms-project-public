@@ -29,6 +29,11 @@ const MyBookings = () => {
 
   if (loading) return <div>Loading...</div>;
 
+  // Check if user is a participant
+  if (user.role !== "participant") {
+    return <div className="text-center">You do not have access to this page. My Bookings page is for participants.</div>;
+  }
+
   return (
     <div className="p-6 bg-white shadow rounded-lg">
       <h2 className="text-2xl text-center font-bold mb-4">My Bookings</h2>
