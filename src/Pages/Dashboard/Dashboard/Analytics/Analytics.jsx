@@ -61,7 +61,7 @@ const Analytics = () => {
         <div className="text-center text-gray-500">No participants registered yet.</div>
       ) : (
         <div className="bg-white shadow-md rounded-lg p-6 sm:p-8">
-          <h3 className="text-2xl font-semibold text-gray-800 mb-4 sm:text-3xl">Camp Registration Fees</h3>
+          <h3 className="text-2xl font-semibold text-gray-800 mb-4 sm:text-3xl text-center">Camp Registration Fees</h3>
           <ResponsiveContainer width="100%" height={400}>
             <PieChart>
               <Pie

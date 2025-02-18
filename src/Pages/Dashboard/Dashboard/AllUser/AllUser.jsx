@@ -78,7 +78,7 @@ const AllUser = () => {
   return (
     <div className="p-4">
       <ToastContainer />
-      <h1 className="text-2xl font-bold mb-4 text-center sm:text-left">All Users</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">All Users</h1>
       {error && <p className="text-red-500">Error: {error.message}</p>}
       {isLoading && <p>Loading...</p>}
       {!isLoading && users.length === 0 && <p>No users found.</p>}

@@ -23,7 +23,7 @@ const PaymentHistory = () => {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <h2 className="text-3xl font-bold text-gray-900 mb-6">Payment History</h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Payment History</h2>
 
       {loading ? (
         <div className="text-center text-gray-500">Loading...</div>

@@ -21,6 +21,9 @@ import RegisteredCamps from "../Pages/Dashboard/Dashboard/RegisteredCamps/Regist
 import ParticipantProfile from "../Pages/Dashboard/Dashboard/ParticipantProfile/ParticipantProfile";
 import PaymentHistory from "../Pages/Dashboard/Dashboard/PaymentHistory/PaymentHistory";
 import AllUser from "../Pages/Dashboard/Dashboard/AllUser/AllUser";
+import AboutUs from "../Pages/AboutUs/AboutUs";
+import MyBookings from "../Pages/Dashboard/Dashboard/MyBookings/MyBookings";
+
 
 
 export const router = createBrowserRouter([
@@ -52,6 +55,10 @@ export const router = createBrowserRouter([
             {
                 path: 'footer',
                 element: <Footer></Footer>
+            },
+            {
+                path: 'about',
+                element: <AboutUs></AboutUs> // Added About Us Route
             },
         ],
     },
@@ -91,6 +98,10 @@ export const router = createBrowserRouter([
                 path: 'payment-history',
                 element: <PaymentHistory></PaymentHistory>
 
+            },
+            {
+                path: 'my-bookings',
+                element: <PrivateRoute><MyBookings></MyBookings></PrivateRoute> // Added My Bookings Route
             },
         ]
 

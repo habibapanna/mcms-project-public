@@ -95,7 +95,7 @@ const ManageRegisteredCamps = () => {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <h2 className="text-3xl font-bold text-gray-900 mb-6">Manage Registered Camps</h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Manage Registered Camps</h2>
       {payments.length === 0 ? (
         <div className="text-center text-gray-500">No registered camps available.</div>
       ) : (

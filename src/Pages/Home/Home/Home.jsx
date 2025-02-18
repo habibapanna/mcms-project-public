@@ -6,6 +6,8 @@ import { AwesomeButton } from "react-awesome-button";
 import { motion } from "framer-motion";
 import "react-awesome-button/dist/styles.css";
 import { Link } from 'react-router-dom';
+import Newsletter from '../../../components/Newsletter/Newsletter';
+import UpcomingEvents from '../../../components/UpcomingEvents/UpcomingEvents';
 
 const Home = () => {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -67,7 +69,8 @@ const Home = () => {
           </div>
         )}
       </div>
-
+      <UpcomingEvents></UpcomingEvents>
+<Newsletter></Newsletter>
 {/* Animated Section */}
 <motion.div
         className="mt-16 mb-10 p-10 bg-teal-500 text-white rounded-lg shadow-lg text-center"

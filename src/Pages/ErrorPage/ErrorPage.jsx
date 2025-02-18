@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const ErrorPage = () => {
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-gray-100 text-center">
+    <div className="h-screen flex flex-col items-center justify-center bg-white text-center">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -22,7 +22,7 @@ const ErrorPage = () => {
       <motion.img
         src="https://i.postimg.cc/vHJ1YTXM/pexels-ann-h-45017-1888015.jpg"
         alt="Error Illustration"
-        className="mt-8 w-64 rounded-full"
+        className="mt-8 w-56 h-56 rounded-full"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.5 }}

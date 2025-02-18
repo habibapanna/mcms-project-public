@@ -39,8 +39,49 @@ const Navbar = () => {
           Available Camps
         </NavLink>
       </li>
+      <li>
+        <NavLink
+          to="/about"
+          className={({ isActive }) =>
+            isActive
+              ? "text-yellow-400 font-semibold"
+              : "hover:text-yellow-400 transition"
+          }
+        >
+          About Us
+        </NavLink>
+      </li>
+      {user && (
+        <>
+          <li>
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-yellow-400 font-semibold"
+                  : "hover:text-yellow-400 transition"
+              }
+            >
+              Dashboard
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/dashboard/my-bookings"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-yellow-400 font-semibold"
+                  : "hover:text-yellow-400 transition"
+              }
+            >
+              My Bookings
+            </NavLink>
+          </li>
+        </>
+      )}
     </>
   );
+  
 
   return (
     <div className="sticky top-0 z-50 bg-white shadow-md">
@@ -80,7 +121,7 @@ const Navbar = () => {
               src="https://i.postimg.cc/qMctjC1W/download-24.jpg"
               alt="Logo"
             />
-            <span className="tracking-wide">
+            <span className="tracking-wide font-serif">
               <span className="text-yellow-400">M</span>
               <span className="text-blue-600">C</span>
               <span className="text-green-600">M</span>

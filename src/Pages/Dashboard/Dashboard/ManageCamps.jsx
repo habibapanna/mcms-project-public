@@ -107,7 +107,7 @@ const ManageCamps = () => {
   return (
     <div className="p-6 min-h-screen">
       <ToastContainer />
-      <h2 className="text-3xl font-bold mb-6">Manage Camps</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center">Manage Camps</h2>
       <div className="overflow-x-auto">
         <table className="table-auto w-full bg-white shadow-md rounded-lg">
           <thead>

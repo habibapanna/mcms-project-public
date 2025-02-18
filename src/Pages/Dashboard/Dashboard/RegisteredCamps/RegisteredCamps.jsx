@@ -102,7 +102,7 @@ const handleSubmitFeedback = async (campId) => {
   return (
     <Elements stripe={stripePromise}>
       <div className="p-6 bg-white shadow rounded-lg">
-        <h2 className="text-2xl font-bold mb-4">Registered Camps</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">Registered Camps</h2>
         {selectedCamp && (
           <PaymentForm
             camp={selectedCamp}

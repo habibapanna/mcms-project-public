@@ -1,32 +1,38 @@
 import { Outlet, NavLink } from "react-router-dom";
 import {
-  FaUser,
-  FaPlus,
-  FaClipboardList,
   FaRegListAlt,
   FaBars,
-  FaHome,
-  FaCampground,
-  FaEnvelope,
-  FaUserFriends,
 } from "react-icons/fa";
 import { useState } from "react";
 import useOrganizer from "../../../hooks/useOrganizer";
-
-
+import { HiOutlineUser } from "react-icons/hi";
+import { IoAddOutline } from "react-icons/io5";
+import { LiaClipboardListSolid } from "react-icons/lia";
+import { HiOutlineUsers } from "react-icons/hi2";
+import { TbBrandCampaignmonitor } from "react-icons/tb";
+import { BsEnvelope } from "react-icons/bs";
+import { AiOutlineHome } from "react-icons/ai";
+import { PiCashRegisterLight } from "react-icons/pi";
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 const [isOrganizer] = useOrganizer();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    // Optionally, you could set localStorage to persist dark mode
+    localStorage.setItem("darkMode", !isDarkMode);
+  };
+
   return (
     <div className="flex flex-col min-h-screen max-w-6xl mx-auto">
       {/* Sidebar Navigation */}
       <div
-        className={`fixed inset-y-0 left-0 bg-teal-600 text-white p-4 w-64 z-50 transform ${
+        className={`fixed inset-y-0 overflow-x-auto left-0 bg-teal-600 text-white p-4 w-64 z-50 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } sm:translate-x-0 transition-transform duration-300 ease-in-out`}
       >
@@ -44,7 +50,7 @@ const [isOrganizer] = useOrganizer();
           {isOrganizer ? (
             <>
               <li className="flex items-center">
-                <FaUser className="mr-3" />
+                <HiOutlineUser className="mr-3" />
                 <NavLink
                   to="organizer-profile"
                   className={({ isActive }) =>
@@ -57,7 +63,7 @@ const [isOrganizer] = useOrganizer();
                 </NavLink>
               </li>
               <li className="flex items-center">
-                <FaPlus className="mr-3" />
+                <IoAddOutline className="mr-3" />
                 <NavLink
                   to="add-camp"
                   className={({ isActive }) =>
@@ -70,7 +76,7 @@ const [isOrganizer] = useOrganizer();
                 </NavLink>
               </li>
               <li className="flex items-center">
-                <FaClipboardList className="mr-3" />
+                <LiaClipboardListSolid className="mr-3" />
                 <NavLink
                   to="manage-camps"
                   className={({ isActive }) =>
@@ -96,7 +102,7 @@ const [isOrganizer] = useOrganizer();
                 </NavLink>
               </li>
               <li className="flex items-center">
-                <FaUserFriends className="mr-3" />
+                <HiOutlineUsers className="mr-3" />
                 <NavLink
                   to="all-user"
                   className={({ isActive }) =>
@@ -125,7 +131,7 @@ const [isOrganizer] = useOrganizer();
                 </NavLink>
               </li>
               <li className="flex items-center">
-                <FaUser className="mr-3" />
+                <HiOutlineUser className="mr-3" />
                 <NavLink
                   to="participant-profile"
                   className={({ isActive }) =>
@@ -138,7 +144,7 @@ const [isOrganizer] = useOrganizer();
                 </NavLink>
               </li>
               <li className="flex items-center">
-                <FaRegListAlt className="mr-3" />
+                <PiCashRegisterLight className="mr-3" />
                 <NavLink
                   to="registered-camps"
                   className={({ isActive }) =>
@@ -151,7 +157,7 @@ const [isOrganizer] = useOrganizer();
                 </NavLink>
               </li>
               <li className="flex items-center">
-                <FaClipboardList className="mr-3" />
+                <LiaClipboardListSolid className="mr-3" />
                 <NavLink
                   to="payment-history"
                   className={({ isActive }) =>
@@ -172,7 +178,7 @@ const [isOrganizer] = useOrganizer();
         {/* Shared Routes */}
         <ul className="space-y-6">
           <li className="flex items-center">
-            <FaHome className="mr-3" />
+            <AiOutlineHome className="mr-3" />
             <NavLink
               to="/"
               className={({ isActive }) =>
@@ -185,7 +191,7 @@ const [isOrganizer] = useOrganizer();
             </NavLink>
           </li>
           <li className="flex items-center">
-            <FaCampground className="mr-3" />
+            <TbBrandCampaignmonitor className="mr-3" />
             <NavLink
               to="/available-camps"
               className={({ isActive }) =>
@@ -198,9 +204,9 @@ const [isOrganizer] = useOrganizer();
             </NavLink>
           </li>
           <li className="flex items-center">
-            <FaEnvelope className="mr-3" />
+            <BsEnvelope  className="mr-3" />
             <NavLink
-              to="/contact"
+              to="/about"
               className={({ isActive }) =>
                 isActive
                   ? "bg-teal-800 rounded px-4 py-2 text-white"
@@ -226,7 +232,7 @@ const [isOrganizer] = useOrganizer();
             <FaBars />
           </button>
         </div>
-        <h1 className="text-2xl font-bold text-gray-700 mb-4 hidden sm:block">
+        <h1 className="text-2xl font-bold text-teal-700 mb-4 hidden text-center sm:block">
           {isOrganizer ? "Organizer Dashboard" : "Participant Dashboard"}
         </h1>
         <Outlet />
