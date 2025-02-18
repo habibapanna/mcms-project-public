@@ -219,7 +219,7 @@ const [isOrganizer] = useOrganizer();
         </ul>
       </div>
 
-      {/* Content Are*/}
+      {/* Content Area */}
       <div className="flex-1 p-4 sm:ml-64">
         <div className="sm:hidden flex justify-between items-center mb-4">
           <h1 className="text-xl font-bold">
