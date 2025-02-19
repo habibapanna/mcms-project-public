@@ -3,33 +3,48 @@ import {
   FaRegListAlt,
   FaBars,
 } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useOrganizer from "../../../hooks/useOrganizer";
 import { HiOutlineUser } from "react-icons/hi";
 import { IoAddOutline } from "react-icons/io5";
 import { LiaClipboardListSolid } from "react-icons/lia";
 import { HiOutlineUsers } from "react-icons/hi2";
 import { TbBrandCampaignmonitor } from "react-icons/tb";
-import { BsEnvelope } from "react-icons/bs";
+import { BsEnvelope, BsMoon, BsSun } from "react-icons/bs";
 import { AiOutlineHome } from "react-icons/ai";
 import { PiCashRegisterLight } from "react-icons/pi";
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem("darkMode") === "true"
+  );
 const [isOrganizer] = useOrganizer();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDarkMode]);
+
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
-    // Optionally, you could set localStorage to persist dark mode
     localStorage.setItem("darkMode", !isDarkMode);
   };
 
   return (
-    <div className="flex flex-col min-h-screen max-w-6xl mx-auto">
+    <div className={`flex flex-col min-h-screen max-w-6xl mx-auto ${isDarkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"}`}>
+        {/* Dark Mode Toggle Button */}
+        <div className="absolute top-4 right-16">
+        <button onClick={toggleDarkMode} className="text-xl p-2 rounded-full border border-teal-500 dark:bg-black">
+          {isDarkMode ? <BsSun className="text-yellow-500" /> : <BsMoon className="text-teal-500" />}
+        </button>
+      </div>
       {/* Sidebar Navigation */}
       <div
         className={`fixed inset-y-0 overflow-x-auto left-0 bg-teal-600 text-white p-4 w-64 z-50 transform ${
@@ -221,7 +236,7 @@ const [isOrganizer] = useOrganizer();
 
       {/* Content Area */}
       <div className="flex-1 p-4 sm:ml-64">
-        <div className="sm:hidden flex justify-between items-center mb-4">
+        <div className="sm:hidden text-teal-600 flex justify-between items-center mb-4">
           <h1 className="text-xl font-bold">
             {isOrganizer ? "Organizer Dashboard" : "Participant Dashboard"}
           </h1>
@@ -232,7 +247,7 @@ const [isOrganizer] = useOrganizer();
             <FaBars />
           </button>
         </div>
-        <h1 className="text-2xl font-bold text-teal-700 mb-4 hidden text-center sm:block">
+        <h1 className="text-2xl font-bold text-teal-600 mb-4 hidden text-center sm:block">
           {isOrganizer ? "Organizer Dashboard" : "Participant Dashboard"}
         </h1>
         <Outlet />
