@@ -20,7 +20,7 @@ const ErrorPage = () => {
         </Link>
       </motion.div>
       <motion.img
-        src="https://i.postimg.cc/vHJ1YTXM/pexels-ann-h-45017-1888015.jpg"
+        src="https://i.postimg.cc/zGfjkkJB/404-error-3060993-1280.png"
         alt="Error Illustration"
         className="mt-8 w-56 h-56 rounded-full"
         initial={{ opacity: 0 }}
