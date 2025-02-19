@@ -38,11 +38,11 @@ const [isOrganizer] = useOrganizer();
   };
 
   return (
-    <div className={`flex flex-col min-h-screen max-w-6xl mx-auto ${isDarkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"}`}>
+    <div className={`flex flex-col min-h-screen max-w-7xl mx-auto ${isDarkMode ? "bg-black text-white" : "bg-white text-black"}`}>
         {/* Dark Mode Toggle Button */}
         <div className="absolute top-4 right-16">
-        <button onClick={toggleDarkMode} className="text-xl p-2 rounded-full border border-teal-500 dark:bg-black">
-          {isDarkMode ? <BsSun className="text-yellow-500" /> : <BsMoon className="text-teal-500" />}
+        <button onClick={toggleDarkMode} className="text-xl p-2 hover:bg-teal-600 rounded-full border border-teal-500 dark:bg-black">
+          {isDarkMode ? <BsSun className="text-yellow-400" /> : <BsMoon className="text-teal-500 hover:text-teal-100" />}
         </button>
       </div>
       {/* Sidebar Navigation */}
